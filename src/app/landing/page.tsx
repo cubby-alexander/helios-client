@@ -6,7 +6,7 @@ const HomePage = () => {
             <div style={styles.container}>
                 <video autoPlay loop muted style={styles.videoBackground}>
                     <source src="/videos/satellite-orbit.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
+                    Your browser does not support the video tagged.
                 </video>
 
                 <header style={styles.header}>
