@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 const HomePage = () => {
   return (
@@ -26,7 +26,7 @@ const HomePage = () => {
   );
 };
 
-const styles = {
+const styles: Record<string, CSSProperties> = {
   container: {
     position: 'relative',
     height: '100vh',
