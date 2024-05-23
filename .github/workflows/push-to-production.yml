@@ -22,6 +22,12 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
+      - name: Debug Secrets
+        run: |
+          echo "DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}"
+          echo "DOCKER_APP_NAME: ${{ secrets.DOCKER_APP_NAME }}"
+          echo "COMMIT_HASH: ${{ env.COMMIT_HASH }}"
+
       - name: Build and push Docker image
         run: |
           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:latest -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:${{ env.COMMIT_HASH }} .
