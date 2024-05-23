@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,6 +38,15 @@ jobs:
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:latest
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:${{ env.COMMIT_HASH }}
 
+  deploy:
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Deploy to DigitalOcean
         env:
           DO_SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
@@ -47,10 +56,11 @@ jobs:
           DOCKER_APP_NAME: ${{ secrets.DOCKER_APP_NAME }}
         run: |
           echo "$DO_SSH_PRIVATE_KEY" | tr -d '\r' > private_key
+          echo private_key
           chmod 600 private_key
           ssh -i private_key -o StrictHostKeyChecking=no -t $DO_USER@$DO_SERVER_IP << EOF
             docker pull $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
             docker stop $DOCKER_APP_NAME || true
             docker rm $DOCKER_APP_NAME || true
-            docker run -d -p 80:5000 --name $DOCKER_APP_NAME $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
+            docker run -d -p 80:3000 --name $DOCKER_APP_NAME $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
           EOF
