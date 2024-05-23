@@ -46,9 +46,9 @@ jobs:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_APP_NAME: ${{ secrets.DOCKER_APP_NAME }}
         run: |
-          echo "$DO_SSH_PRIVATE_KEY" > private_key
+          echo "$DO_SSH_PRIVATE_KEY" | tr -d '\r' > private_key
           chmod 600 private_key
-          ssh -i private_key -o StrictHostKeyChecking=no $DO_USER@$DO_SERVER_IP << EOF
+          ssh -i private_key -o StrictHostKeyChecking=no -t $DO_USER@$DO_SERVER_IP << EOF
             docker pull $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
             docker stop $DOCKER_APP_NAME || true
             docker rm $DOCKER_APP_NAME || true
