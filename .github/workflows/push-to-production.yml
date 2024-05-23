@@ -2,8 +2,8 @@ name: Deploy to DigitalOcean
 
 on:
   push:
-    branches:
-      - main
+#    branches:
+#      - main
 
 jobs:
   build:
@@ -56,8 +56,12 @@ jobs:
           DOCKER_APP_NAME: ${{ secrets.DOCKER_APP_NAME }}
         run: |
           echo "$DO_SSH_PRIVATE_KEY" | tr -d '\r' > private_key
-          cat private_key
+          echo "Length of private_key:"
+          wc -c < private_key
+          ls -l private_key
+          sha256sum private_key
           chmod 600 private_key
+          ls -l private_key
           ssh -i private_key -o StrictHostKeyChecking=no -t $DO_USER@$DO_SERVER_IP << EOF
             docker pull $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
             docker stop $DOCKER_APP_NAME || true
