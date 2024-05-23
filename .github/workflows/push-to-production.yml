@@ -43,4 +43,4 @@ jobs:
             docker stop $DOCKER_APP_NAME || true
             docker rm $DOCKER_APP_NAME || true
             docker run -d -p 80:5000 --name $DOCKER_APP_NAME $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
-  EOF
+          EOF
