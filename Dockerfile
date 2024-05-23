@@ -9,7 +9,9 @@ COPY . .
 
 # Install node packages, install serve, build the app, and remove dependencies at the end
 RUN npm install \
-    && npm run build
+    && npm run build \
+    && cp -r public .next/standalone \
+    && cp -r .next/static .next/standalone/.next
 
 # Inform Docker that the container is listening on the specified port at runtime
 EXPOSE 3000
