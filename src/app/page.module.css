@@ -41,9 +41,10 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(25%, auto));
-  max-width: 100%;
+  grid-template-columns: repeat(2, minmax(50%, auto));
+  max-width: 60%;
   width: var(--max-width);
+  gap: 40px;
 }
 
 .card {
@@ -79,6 +80,16 @@
   align-items: center;
   position: relative;
   padding: 4rem 0;
+}
+
+.center span {
+  font-size: 1rem;
+  font-weight: 100;
+}
+
+.center h2 {
+  font-weight: 400;
+  font-size: 3.4rem;
 }
 
 .center::before {
