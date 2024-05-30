@@ -15,17 +15,12 @@ export default function Home() {
       </div>
 
       <div className={styles.grid}>
-        <a
-          href='https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-          className={styles.card}
-          target='_blank'
-          rel='noopener noreferrer'
-        >
+        <div className={styles.card}>
           <h2>
             Discover <span>-&gt;</span>
           </h2>
           <p>Use AI to see how satellites can unlock value for your organization</p>
-        </a>
+        </div>
 
         <div className={styles.card}>
           <h2>Order</h2>
