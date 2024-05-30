@@ -1,13 +1,13 @@
 'use client';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, PropsWithChildren, useEffect, useState } from 'react';
 
-export const ThemeContext = createContext('light');
+export const ThemeContext = createContext<'light' | 'dark'>('light');
 
-export default function ThemeProvider({ children }) {
-  const [colorScheme, setColorScheme] = useState('light');
+export default function ThemeProvider({ children }: PropsWithChildren) {
+  const [colorScheme, setColorScheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    const updateColorScheme = (e) => {
+    const updateColorScheme = (e: MediaQueryListEvent) => {
       setColorScheme(e.matches ? 'dark' : 'light');
     };
     const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
