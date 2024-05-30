@@ -1,13 +1,39 @@
+'use client';
 import Image from 'next/image';
 import styles from './styles.module.css';
+import { useContext } from 'react';
+import { ThemeContext } from '../../context/theme-provider';
 
 export default function HeliosLogo() {
+  const colorScheme = useContext(ThemeContext);
+
+  const logoMap = {
+    logoHeli: {
+      light: '/logo-heli-dark.png',
+      dark: '/logo-heli-light.png'
+    },
+    logoOrbital: {
+      light: '/logo-orbital-dark.png',
+      dark: '/logo-orbital-light.png'
+    },
+    logoS: {
+      light: '/logo-s-dark.png',
+      dark: '/logo-s-light.png'
+    }
+  };
+
   return (
     <div>
       <a href='/' rel='noopener noreferrer'>
-        <Image src={'/Helios-2.png'} alt='Helios Logo' width={90} height={40} priority />
         <Image
-          src={'/Helios-1.png'}
+          src={logoMap.logoHeli[colorScheme]}
+          alt='Helios Logo'
+          width={90}
+          height={40}
+          priority
+        />
+        <Image
+          src={logoMap.logoOrbital[colorScheme]}
           alt='Helios Logo'
           className={styles.orbital}
           width={29}
@@ -15,7 +41,7 @@ export default function HeliosLogo() {
           priority
         />
         <Image
-          src={'/Helios-3.png'}
+          src={logoMap.logoS[colorScheme]}
           alt='Helios Logo'
           style={{ marginLeft: '-22px' }}
           width={45}
