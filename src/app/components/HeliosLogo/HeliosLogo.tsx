@@ -25,29 +25,25 @@ export default function HeliosLogo() {
   return (
     <div>
       <a href='/' rel='noopener noreferrer'>
-        <Image
-          src={logoMap.logoHeli[colorScheme]}
-          alt='Helios Logo'
-          width={90}
-          height={40}
-          priority
-        />
-        <Image
-          src={logoMap.logoOrbital[colorScheme]}
-          alt='Helios Logo'
-          className={styles.orbital}
-          width={29}
-          height={29}
-          priority
-        />
-        <Image
-          src={logoMap.logoS[colorScheme]}
-          alt='Helios Logo'
-          style={{ marginLeft: '-22px' }}
-          width={45}
-          height={44}
-          priority
-        />
+        <picture>
+          <source srcSet='/logo-heli-dark.png' media='(prefers-color-scheme: light)' />
+          <Image src='/logo-heli-light.png' alt='Helios Logo' width={90} height={40} priority />
+        </picture>
+        <picture>
+          <source srcSet='/logo-orbital-dark.png' media='(prefers-color-scheme: light)' />
+          <Image
+            src='/logo-orbital-light.png'
+            alt='Helios Logo'
+            className={styles.orbital}
+            width={48}
+            height={45}
+            priority
+          />
+        </picture>
+        <picture style={{ marginLeft: '-36px' }}>
+          <source srcSet='/logo-s-dark.png' media='(prefers-color-scheme: light)' />
+          <Image src='/logo-s-light.png' alt='Helios Logo' width={52} height={50} priority />
+        </picture>
       </a>
     </div>
   );

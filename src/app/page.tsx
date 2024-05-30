@@ -1,32 +1,16 @@
-import styles from './page.module.css';
-import HeliosLogo from './components/HeliosLogo/HeliosLogo';
+'use client';
+import LandingContent from './LandingContent';
+import DiscoveryFlow from './DiscoveryFlow';
+import { useState } from 'react';
+import { CONTENT } from './enums';
 
 export default function Home() {
+  const [content, setContent] = useState(CONTENT.LANDING);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <HeliosLogo />
-      </div>
-
-      <div className={styles.center}>
-        <span>
-          unlock space economy value in our<h2>ORBITAL SERVICE MARKET</h2>
-        </span>
-      </div>
-
-      <div className={styles.grid}>
-        <div className={styles.card}>
-          <h2>
-            Discover <span>-&gt;</span>
-          </h2>
-          <p>Use AI to see how satellites can unlock value for your organization</p>
-        </div>
-
-        <div className={styles.card}>
-          <h2>Order</h2>
-          <p>Find satellite operators for your mission. Coming soon...</p>
-        </div>
-      </div>
-    </main>
+    <div>
+      {content === CONTENT.LANDING && <LandingContent changeContent={setContent} />}
+      {content === CONTENT.DISCOVERY_FLOW && <DiscoveryFlow />}
+    </div>
   );
 }

@@ -34,6 +34,15 @@
   border-radius: var(--border-radius);
 }
 
+.landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 55vh;
+  text-align: center;
+}
+
 .code {
   font-weight: 700;
   font-family: var(--font-mono);
@@ -52,6 +61,7 @@
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
+  text-align: left;
   transition: background 200ms, border 200ms;
 }
 
@@ -61,6 +71,7 @@
 }
 
 .card h2 {
+  font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 0.7rem;
 }
@@ -70,8 +81,6 @@
   opacity: 0.6;
   font-size: 0.9rem;
   line-height: 1.5;
-  max-width: 30ch;
-  text-wrap: balance;
 }
 
 .center {
@@ -79,6 +88,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  text-align: left;
   padding: 4rem 0;
 }
 
@@ -90,6 +100,7 @@
 .center h2 {
   font-weight: 400;
   font-size: 3.4rem;
+  line-height: 65px;
 }
 
 .center::before {
