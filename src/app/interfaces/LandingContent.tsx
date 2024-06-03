@@ -1,6 +1,6 @@
 'use client';
-import styles from './page.module.css';
-import { CONTENT } from './enums';
+import styles from '../page.module.css';
+import { CONTENT } from '../enums';
 
 interface LandingContentProps {
   changeContent: (content: CONTENT) => () => void;
@@ -22,14 +22,14 @@ export default function LandingContent({ changeContent }: LandingContentProps) {
           onClick={() => changeContent(CONTENT.DISCOVERY_FLOW)}
         >
           <h2>
-            Discover Value<span>-&gt;</span>
+            Discover Services<span>-&gt;</span>
           </h2>
-          <p>Use AI to see how satellites can unlock value for your organization</p>
+          <p>Use AI to learn how satellite imaging can deliver value to your organization</p>
         </div>
 
         <div className={`${styles.card}`}>
           <h2>Order Services</h2>
-          <p>Find satellite operators for your mission. Coming soon...</p>
+          <p>Find mission operators who can provide your desired service. Coming soon...</p>
         </div>
       </div>
     </div>

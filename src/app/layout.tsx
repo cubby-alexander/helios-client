@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <Providers>
-          <main className={styles.main}>
+          <main className={`dark ${styles.main}`}>
             <div className={styles.description}>
               <HeliosLogo />
             </div>

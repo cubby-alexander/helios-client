@@ -150,6 +150,10 @@
 
 /* Mobile */
 @media (max-width: 700px) {
+  .landing {
+    height: 100vh;
+  }
+
   .content {
     padding: 4rem;
   }
