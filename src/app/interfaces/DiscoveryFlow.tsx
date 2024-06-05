@@ -4,27 +4,29 @@ import { Accordion, AccordionItem, Button, Textarea } from '@nextui-org/react';
 import {
   BuildingOfficeIcon,
   GlobeAmericasIcon,
-  LinkIcon,
-  ListBulletIcon
+  ListBulletIcon,
+  WrenchIcon
 } from '@heroicons/react/16/solid';
 import { useRef, useState } from 'react';
 import { FORM_STATUS } from '../enums';
 
 export default function DiscoveryFlow() {
-  const [openKeys, setOpenKeys] = useState<string[]>(['1']);
-  const [disabledKeys, setDisabledKeys] = useState<string[]>(['2', '3', '4']);
+  const [openKeys, setOpenKeys] = useState<string[]>(['1', '2']);
+  const [disabledKeys, setDisabledKeys] = useState<string[]>(['3', '4']);
   const [formStatus, setFormStatus] = useState<string>(FORM_STATUS.INCOMPLETE);
   const [value, setValue] = useState<string>('');
-  const textareaRef = useRef(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const itemClasses = {
-    base: 'py-2 w-full',
+    base: 'w-full',
     title: 'font-normal text-slate-200 pl-4',
     subtitle: 'pl-4 text-small',
     content: 'text-small px-2 text-xs'
   };
 
-  const handleAccordionChange = (expanded) => {
+  const dummyResponses = [];
+
+  const handleAccordionChange = (expanded: boolean) => {
     if (expanded && textareaRef.current) {
       textareaRef.current.focus();
     }
@@ -32,7 +34,7 @@ export default function DiscoveryFlow() {
 
   return (
     <div className={interfaces.form}>
-      <div className={`text-gray-300 ${interfaces.heading}`}>Discover Satellite Services</div>
+      <div className={`text-gray-400 ${interfaces.heading}`}>Discover Satellite Services</div>
       <div className={styles.center}>
         <Accordion
           className='p-2 flex flex-col gap-1 w-[80vw] max-w-[800px]'
@@ -51,8 +53,8 @@ export default function DiscoveryFlow() {
             key='1'
             aria-label='Your Organization or Mission'
             classNames={{ content: 'flex flex-wrap flex-col gap-2 w-full' }}
-            startContent={<BuildingOfficeIcon className='text-slate-200 h-7 w-7' />}
-            title={<p className='text-lg font-medium'>Your Organization or Mission</p>}
+            startContent={<BuildingOfficeIcon className='text-slate-400 h-7 w-7' />}
+            title={<p className='text-lg font-light font-medium'>Your Organization or Mission</p>}
             subtitle='What do you do?'
             onFocus={() => handleAccordionChange(true)}
           >
@@ -96,7 +98,7 @@ export default function DiscoveryFlow() {
           <AccordionItem
             key='2'
             aria-label='Confirm Major Operations'
-            startContent={<LinkIcon className='text-slate-200 h-7 w-7' />}
+            startContent={<WrenchIcon className='text-slate-400 h-7 w-7' />}
             title={<p className='font-medium'>Confirm Major Operations</p>}
             subtitle='How do you run?'
           >
@@ -109,7 +111,7 @@ export default function DiscoveryFlow() {
           <AccordionItem
             key='3'
             aria-label='Select Key Operations'
-            startContent={<ListBulletIcon className='text-slate-200 h-7 w-7' />}
+            startContent={<ListBulletIcon className='text-slate-400 h-7 w-7' />}
             title={<p className='font-medium'>Select Key Operations</p>}
             subtitle='What do you need?'
           >
@@ -119,7 +121,7 @@ export default function DiscoveryFlow() {
           <AccordionItem
             key='4'
             aria-label='Card expired'
-            startContent={<GlobeAmericasIcon className='text-slate-200 h-7 w-7' />}
+            startContent={<GlobeAmericasIcon className='text-slate-400 h-7 w-7' />}
             subtitle='What unlocks value?'
             title={<p className='font-medium'>Generate Satellite Solutions</p>}
           >

@@ -3,7 +3,7 @@ import styles from '../page.module.css';
 import { CONTENT } from '../enums';
 
 interface LandingContentProps {
-  changeContent: (content: CONTENT) => () => void;
+  changeContent: (content: CONTENT) => void;
 }
 
 export default function LandingContent({ changeContent }: LandingContentProps) {
