@@ -1,12 +1,8 @@
 'use client';
 import Image from 'next/image';
 import styles from './styles.module.css';
-import { useContext } from 'react';
-import { ThemeContext } from '../../context/theme-provider';
 
 export default function HeliosLogo() {
-  const colorScheme = useContext(ThemeContext);
-
   const logoMap = {
     logoHeli: {
       light: '/logo-heli-dark.png',
@@ -25,29 +21,25 @@ export default function HeliosLogo() {
   return (
     <div>
       <a href='/' rel='noopener noreferrer'>
-        <Image
-          src={logoMap.logoHeli[colorScheme]}
-          alt='Helios Logo'
-          width={90}
-          height={40}
-          priority
-        />
-        <Image
-          src={logoMap.logoOrbital[colorScheme]}
-          alt='Helios Logo'
-          className={styles.orbital}
-          width={29}
-          height={29}
-          priority
-        />
-        <Image
-          src={logoMap.logoS[colorScheme]}
-          alt='Helios Logo'
-          style={{ marginLeft: '-22px' }}
-          width={45}
-          height={44}
-          priority
-        />
+        <picture>
+          <source srcSet='/logo-heli-light.png' media='(prefers-color-scheme: light)' />
+          <Image src='/logo-heli-light.png' alt='Helios Logo' width={90} height={40} priority />
+        </picture>
+        <picture>
+          <source srcSet='/logo-orbital-light.png' media='(prefers-color-scheme: light)' />
+          <Image
+            src='/logo-orbital-light.png'
+            alt='Helios Logo'
+            className={styles.orbital}
+            width={48}
+            height={45}
+            priority
+          />
+        </picture>
+        <picture style={{ marginLeft: '-36px' }}>
+          <source srcSet='/logo-s-light.png' media='(prefers-color-scheme: light)' />
+          <Image src='/logo-s-light.png' alt='Helios Logo' width={52} height={50} priority />
+        </picture>
       </a>
     </div>
   );

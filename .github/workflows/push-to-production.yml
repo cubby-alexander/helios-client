@@ -61,5 +61,7 @@ jobs:
             docker pull $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
             docker stop $DOCKER_APP_NAME || true
             docker rm $DOCKER_APP_NAME || true
-            docker run -d -p 80:3000 --name $DOCKER_APP_NAME $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
+            docker run -d -p 80:3000 --name $DOCKER_APP_NAME \
+              -e OPENAI_API_KEY=$OPENAI_API_KEY \
+              $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
           EOF
