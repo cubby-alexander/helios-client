@@ -9,13 +9,18 @@ export default function handler(req, res) {
 
   exec(`python3 ${scriptPath} "${userMessage}"`, (error, stdout, stderr) => {
     if (error) {
-      console.error(`exec error: ${error}`);
+      res.status(500).json({ message: `exec error: ${error.message}` });
       return;
     }
     if (stderr) {
       res.status(500).json({ message: stderr });
       return;
     }
-    res.status(200).json({ message: stdout });
+    try {
+      const output = JSON.parse(stdout);
+      res.status(200).json(output);
+    } catch (parseError) {
+      res.status(500).json({ message: `JSON parse error: ${parseError.message}` });
+    }
   });
 }

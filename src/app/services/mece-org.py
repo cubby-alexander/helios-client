@@ -1,5 +1,6 @@
 from openai import OpenAI
 import sys
+import json
 
 client = OpenAI()
 
@@ -58,7 +59,7 @@ def generate_mece_list(user_message):
         messages = client.beta.threads.messages.list(
             thread_id=thread.id
         )
-        return messages
+        return [message.to_dict() for message in messages.data]
     else:
         return run.status
 
@@ -68,5 +69,4 @@ if __name__ == "__main__":
     else:
         user_message = "default message"
 result = generate_mece_list(user_message)
-print(user_message)
-print(result)
+print(json.dumps(result))

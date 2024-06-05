@@ -8,5 +8,6 @@ export enum FORM_STATUS {
   SUBMITTABLE = 'submittable',
   PENDING = 'pending',
   WARNING = 'warning',
-  ERROR = 'error'
+  ERROR = 'error',
+  SUCCESS = 'success'
 }
