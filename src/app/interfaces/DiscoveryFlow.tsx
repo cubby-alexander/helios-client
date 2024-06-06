@@ -1,79 +1,21 @@
 import styles from '../page.module.css';
 import interfaces from './interfaces.module.css';
 import { Accordion, AccordionItem, Button, Textarea } from '@nextui-org/react';
-import {
-  BuildingOfficeIcon,
-  GlobeAmericasIcon,
-  ListBulletIcon,
-  WrenchIcon
-} from '@heroicons/react/16/solid';
-import { useEffect, useRef, useState } from 'react';
-import { FORM_STATUS } from '../enums';
-
-interface OrgOpsList {
-  groups: OrgOpsListItem[];
-}
-
-interface OrgOpsListItem {
-  group: string;
-  activities: string[];
-}
+import { GlobeAmericasIcon, ListBulletIcon, WrenchIcon } from '@heroicons/react/16/solid';
+import { useRef, useState } from 'react';
+import { OrgOpsList, OrgOpsListItem } from '../types/DiscoveryFormTypes';
+import OrgScopeSection from './OrgScopeSection';
 
 export default function DiscoveryFlow() {
   const [openKeys, setOpenKeys] = useState<string[]>(['1', '2']);
   const [disabledKeys, setDisabledKeys] = useState<string[]>(['3', '4']);
-  const [formStatus, setFormStatus] = useState<string>(FORM_STATUS.INCOMPLETE);
-  const [value, setValue] = useState<string>('');
   const [orgOpsList, setOrgOpsList] = useState<OrgOpsList | null>(null);
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const itemClasses = {
     base: 'w-full',
     title: 'font-normal text-slate-200 pl-4',
     subtitle: 'pl-4 text-small',
     content: 'text-small px-2 text-xs'
-  };
-
-  const dummyResponses = [];
-
-  const handleFormSubmission = () => {
-    setFormStatus(FORM_STATUS.PENDING);
-    const queryParams = new URLSearchParams({
-      userMessage: value
-    });
-    fetch(`api/mece-org?${queryParams}`, {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setFormStatus(FORM_STATUS.SUCCESS);
-        setOrgOpsList(JSON.parse(data[0].content[0].text.value));
-        setDisabledKeys(['3', '4']);
-        setOpenKeys(['2']);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        setFormStatus(FORM_STATUS.ERROR);
-      });
-  };
-
-  useEffect(() => {
-    console.log(orgOpsList);
-  }, [orgOpsList]);
-
-  const handleAccordionChange = (expanded: boolean) => {
-    if (expanded && textareaRef.current) {
-      textareaRef.current.focus();
-    }
   };
 
   return (
@@ -93,48 +35,11 @@ export default function DiscoveryFlow() {
           disabledKeys={disabledKeys}
           selectedKeys={openKeys}
         >
-          <AccordionItem
-            key='1'
-            aria-label='Your Organization or Mission'
-            classNames={{ content: 'flex flex-wrap flex-col gap-2 w-full' }}
-            startContent={<BuildingOfficeIcon className='text-slate-400 h-7 w-7' />}
-            title={<p className='text-lg font-light font-medium'>Your Organization or Mission</p>}
-            subtitle='What do you do?'
-            onFocus={() => handleAccordionChange(true)}
-          >
-            <div className='text-small font-thin text-gray-300 pt-2 pb-6'>
-              Provide a brief description of your operation. The shorter the better (3-8 words is
-              ideal), but the more specific the better (e.g. &quot;a city fire department&quot; is
-              better than &quot;a fire department&quot;).
-            </div>
-            <Textarea
-              ref={textareaRef}
-              variant='flat'
-              label='Brief Description'
-              placeholder={'Enter your description'}
-              color='default'
-              className={''}
-              isDisabled={formStatus === FORM_STATUS.PENDING}
-              isInvalid={false}
-              errorMessage={''}
-              value={value}
-              onValueChange={(value) => {
-                setValue(value);
-                if (value.length > 0) setFormStatus(FORM_STATUS.SUBMITTABLE);
-                else setFormStatus(FORM_STATUS.INCOMPLETE);
-              }}
-            />
-            <Button
-              color='primary'
-              variant='flat'
-              className='self-end mt-6'
-              isDisabled={formStatus === FORM_STATUS.INCOMPLETE}
-              isLoading={formStatus === FORM_STATUS.PENDING}
-              onClick={handleFormSubmission}
-            >
-              {formStatus === FORM_STATUS.PENDING ? 'Generating Operation Map' : 'Submit'}
-            </Button>
-          </AccordionItem>
+          <OrgScopeSection
+            orgOpsChange={(ops: OrgOpsList) => setOrgOpsList(ops)}
+            disabledKeyChange={setDisabledKeys}
+            openKeyChange={setOpenKeys}
+          />
           <AccordionItem
             key='2'
             classNames={{ content: 'flex flex-wrap flex-col gap-2 w-full' }}
