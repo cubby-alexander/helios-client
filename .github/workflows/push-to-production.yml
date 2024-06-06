@@ -54,6 +54,7 @@ jobs:
           DO_USER: ${{ secrets.DO_USER }}
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_APP_NAME: ${{ secrets.DOCKER_APP_NAME }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           echo "$DO_SSH_PRIVATE_KEY" | tr -d '\r' > private_key
           chmod 600 private_key
