@@ -24,6 +24,9 @@ RUN cp -r public .next/standalone \
 # Install Python and necessary packages
 RUN apt-get update && apt-get install -y python3 python3-pip
 
+# Use pip to install the openai package
+RUN pip3 install openai
+
 # Copy the requirements.txt and install Python dependencies
 COPY src/app/services/requirements.txt .
 RUN pip3 install -r requirements.txt
