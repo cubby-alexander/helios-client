@@ -1,28 +1,22 @@
-import { AccordionItem, Button, Textarea } from '@nextui-org/react';
-import { BuildingOfficeIcon } from '@heroicons/react/16/solid';
+import { Button, Textarea } from '@nextui-org/react';
 import { FORM_STATUS } from '../enums';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 interface OrgScopeSectionProps {
+  textRef: React.RefObject<HTMLTextAreaElement>;
   orgOpsChange: (OrgOpsList) => void;
   disabledKeyChange: (keys: string[]) => void;
   openKeyChange: (keys: string[]) => void;
 }
 
 export default function OrgScopeSection({
+  textRef,
   orgOpsChange,
   disabledKeyChange,
   openKeyChange
 }: OrgScopeSectionProps) {
   const [value, setValue] = useState<string>('');
   const [formStatus, setFormStatus] = useState<string>(FORM_STATUS.INCOMPLETE);
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
-  const handleAccordionChange = (expanded: boolean) => {
-    if (expanded && textareaRef.current && 'focus' in textareaRef.current) {
-      (textareaRef.current as HTMLTextAreaElement).focus();
-    }
-  };
 
   const handleFormValueChange = (value) => {
     setValue(value);
@@ -60,25 +54,17 @@ export default function OrgScopeSection({
   };
 
   return (
-    <AccordionItem
-      key='1'
-      aria-label='Your Organization or Mission'
-      classNames={{ content: 'flex flex-wrap flex-col gap-2 w-full' }}
-      startContent={<BuildingOfficeIcon className='text-slate-400 h-7 w-7' />}
-      title={<p className='text-lg font-light font-medium'>Your Organization or Mission</p>}
-      subtitle='What do you do?'
-      onFocus={handleAccordionChange}
-    >
-      <div className='text-small font-thin text-gray-300 pt-2 pb-6'>
-        Provide a brief description of your operation. The shorter the better (3-8 words is ideal),
-        but the more specific the better (e.g. &quot;a city fire department&quot; is better than
-        &quot;a fire department&quot;).
+    <div className='flex flex-wrap flex-col gap-2 w-full'>
+      <div className='text-small font-light text-gray-400 pt-2 pb-6'>
+        Briefly describe the scope of your operations. Be as short (3-8 words is ideal) and specific
+        (e.g. &quot;a city fire department&quot; is better than &quot;a fire department&quot;) as
+        possible.
       </div>
       <Textarea
-        ref={textareaRef}
+        ref={textRef}
         variant='flat'
-        label='Brief Description'
-        placeholder={'Enter your description'}
+        label='Brief Description of Scope'
+        placeholder={'Enter operational scope of your organization or mission'}
         color='default'
         className={''}
         isDisabled={formStatus === FORM_STATUS.PENDING}
@@ -97,6 +83,6 @@ export default function OrgScopeSection({
       >
         {formStatus === FORM_STATUS.PENDING ? 'Generating Operation Map' : 'Submit'}
       </Button>
-    </AccordionItem>
+    </div>
   );
 }

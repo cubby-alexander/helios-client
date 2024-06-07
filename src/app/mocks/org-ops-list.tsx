@@ -1,6 +1,6 @@
 import { OrgOpsList } from '../types/DiscoveryFormTypes';
 
-const mockOrgOpsList: OrgOpsList = {
+export const mockOrgOpsList: OrgOpsList = {
   groups: [
     {
       group: 'Fire Fighting',
