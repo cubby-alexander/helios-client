@@ -39,7 +39,11 @@ jobs:
           OPENAI_MECE_OPS_ACTIVITY: ${{ secrets.OPENAI_MECE_OPS_ACTIVITY }}
           OPENAI_RSS_FILTERING_ID: ${{ secrets.OPENAI_RSS_FILTERING_ID }}
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:latest -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:${{ env.COMMIT_HASH }} .
+          docker build --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}  --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+            --build-arg OPENAI_MECE_ORG_OPS_ID=${{ secrets.OPENAI_MECE_ORG_OPS_ID }} \
+            --build-arg OPENAI_MECE_OPS_ACTIVITY=${{ secrets.OPENAI_MECE_OPS_ACTIVITY }} \
+            --build-arg OPENAI_RSS_FILTERING_ID=${{ secrets.OPENAI_RSS_FILTERING_ID }} \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:latest -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:${{ env.COMMIT_HASH }} .
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:latest
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:${{ env.COMMIT_HASH }}
 
