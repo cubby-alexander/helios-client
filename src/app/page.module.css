@@ -14,7 +14,7 @@
   font-size: 0.85rem;
   max-width: var(--max-width);
   width: 100%;
-  z-index: 2;
+  z-index: 35;
   font-family: var(--font-mono);
 }
 
@@ -63,6 +63,7 @@
   border: 1px solid rgba(var(--card-border-rgb), 0);
   text-align: left;
   transition: background 200ms, border 200ms;
+  z-index: 15;
 }
 
 .card span {

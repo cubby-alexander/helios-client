@@ -8,7 +8,7 @@ interface LandingContentProps {
 
 export default function LandingContent({ changeContent }: LandingContentProps) {
   return (
-    <div className={styles.landing}>
+    <div className={`${styles.landing}`}>
       <div className={styles.center}>
         <span>
           unlock space economy value in our
