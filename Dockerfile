@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:19-bullseye
+FROM node:19-bullseye-slim
 
 # Set the working directory
 WORKDIR /app
@@ -12,6 +12,14 @@ RUN npm install
 
 # Copy the file from your host to your current location
 COPY . .
+
+# Set the environment variable
+ENV OPENAI_API_KEY=${OPENAI_API_KEY}
+ENV OPENAI_MECE_ORG_OPS_ID=${OPENAI_MECE_ORG_OPS_ID}
+ENV OPENAI_MECE_OPS_ACTIVITY_ID=${OPENAI_MECE_OPS_ACTIVITY_ID}
+ENV OPENAI_RSS_FILTERING_ID=${OPENAI_RSS_FILTERING_ID}
+
+RUN echo env
 
 # Build the Next.js app
 RUN npm run build
