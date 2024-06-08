@@ -55,6 +55,9 @@ jobs:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_APP_NAME: ${{ secrets.DOCKER_APP_NAME }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MECE_ORG_OPS_ID: ${{ secrets.OPENAI_MECE_ORG_OPS_ID }}
+          OPENAI_MECE_OPS_ACTIVITY: ${{ secrets.OPENAI_MECE_OPS_ACTIVITY }}
+          OPENAI_RSS_FILTERING_ID: ${{ secrets.OPENAI_RSS_FILTERING_ID }}
 
         run: |
           echo "$DO_SSH_PRIVATE_KEY" | tr -d '\r' > private_key
