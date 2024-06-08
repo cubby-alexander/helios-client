@@ -1,13 +1,18 @@
 import { Button, Textarea } from '@nextui-org/react';
 import { FORM_STATUS } from '../enums';
 import { useState } from 'react';
+import { OrgOpsList } from '../types/DiscoveryFormTypes';
 
 interface OrgScopeSectionProps {
   textRef: React.RefObject<HTMLTextAreaElement>;
   orgScopeChange: (scope: string) => void;
-  orgOpsChange: (OrgOpsList) => void;
+  orgOpsChange: (OrgOpsList: OrgOpsList) => void;
   disabledKeyChange: (keys: string[]) => void;
   openKeyChange: (keys: string[]) => void;
+  scroll: {
+    handler: (element: React.RefObject<HTMLDivElement>) => void;
+    target: React.RefObject<HTMLDivElement>;
+  };
 }
 
 export default function OrgScopeSection({
@@ -15,12 +20,13 @@ export default function OrgScopeSection({
   orgScopeChange,
   orgOpsChange,
   disabledKeyChange,
-  openKeyChange
+  openKeyChange,
+  scroll
 }: OrgScopeSectionProps) {
   const [value, setValue] = useState<string>('');
   const [formStatus, setFormStatus] = useState<string>(FORM_STATUS.INCOMPLETE);
 
-  const handleFormValueChange = (value) => {
+  const handleFormValueChange = (value: string) => {
     setValue(value);
     if (value.length > 0) setFormStatus(FORM_STATUS.SUBMITTABLE);
     else setFormStatus(FORM_STATUS.INCOMPLETE);
@@ -49,6 +55,7 @@ export default function OrgScopeSection({
         orgOpsChange(JSON.parse(data[0].content[0].text.value));
         disabledKeyChange(['3', '4']);
         openKeyChange(['2']);
+        scroll.handler(scroll.target);
       })
       .catch((error) => {
         console.error('Error:', error);

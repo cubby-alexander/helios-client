@@ -1,13 +1,21 @@
 import { RefinedOpsList } from '../types/DiscoveryFormTypes';
-import { useEffect, useState } from 'react';
-import { mockRefinedOpsList } from '../mocks/refined-ops-list';
+import { useState } from 'react';
 import { OperationsListbox } from './OperationsListbox';
 
 interface SelectKeyOpsSectionProps {
   refinedOpsList: RefinedOpsList | null;
+  scrollRef: React.RefObject<HTMLDivElement>;
+  scroll: {
+    handler: (element: React.RefObject<HTMLDivElement>) => void;
+    target: React.RefObject<HTMLDivElement>;
+  };
 }
 
-export function SelectKeyOpsSection({ refinedOpsList }: SelectKeyOpsSectionProps) {
+export function SelectKeyOpsSection({
+  refinedOpsList,
+  scroll,
+  scrollRef
+}: SelectKeyOpsSectionProps) {
   const [selectedOps, setSelectedOps] = useState<{ [key: string]: string[] }>({});
 
   const handleOpsSelection = (operationKey: string, selectedKeys: Set<string> | undefined) => {
@@ -20,7 +28,7 @@ export function SelectKeyOpsSection({ refinedOpsList }: SelectKeyOpsSectionProps
   };
 
   return (
-    <div className='flex flex-wrap flex-row gap-6 w-full'>
+    <div ref={scrollRef} className='flex flex-wrap flex-row gap-6 w-full'>
       <div className='text-small font-light text-gray-400 pt-2 pb-6'>
         The following is a list of the activities in your operation we&apos;ve identified that may
         be observed by satellite. These activities are grouped by the major operation they fall
@@ -30,7 +38,7 @@ export function SelectKeyOpsSection({ refinedOpsList }: SelectKeyOpsSectionProps
         Select 3 activities to deep analyze in the final section.
       </div>
       {refinedOpsList &&
-        refinedOpsList.map((item, index) => {
+        refinedOpsList.map((item: any, index: number) => {
           if (
             item.rssFilter.definitelyObservable.length === 0 &&
             item.rssFilter.maybeObservable.length === 0

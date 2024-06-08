@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ExecException } from 'child_process';
+import { MeceOrgResponse } from '../api-types';
 const { exec } = require('child_process');
 const path = require('path');
 
@@ -8,10 +10,10 @@ export async function GET(req: NextRequest) {
   const scriptPath = path.join?.(process.cwd(), 'src/app/services/mece-org.py');
 
   try {
-    const result = await new Promise((resolve, reject) => {
+    const result: MeceOrgResponse = await new Promise<MeceOrgResponse>((resolve, reject) => {
       exec(
         `python3 ${scriptPath} "${userMessage}" ${process.env.OPENAI_MECE_ORG_OPS_ID}`,
-        (error, stdout, stderr) => {
+        (error: ExecException | null, stdout: string, stderr: string) => {
           if (error) {
             reject({ message: error.message, status: 500 });
           }
@@ -22,14 +24,16 @@ export async function GET(req: NextRequest) {
             const output = JSON.parse(stdout);
             resolve({ output, status: 200 });
           } catch (parseError) {
-            reject({ message: parseError.message, status: 500 });
+            const errorMessage = (parseError as Error).message;
+            reject({ message: errorMessage, status: 500 });
           }
         }
       );
     });
 
-    return NextResponse.json(result.output, { status: result.status });
-  } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: error.status });
+    const responseInit: ResponseInit = { status: result.status };
+    return NextResponse.json(result.output, responseInit);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 } as ResponseInit);
   }
 }

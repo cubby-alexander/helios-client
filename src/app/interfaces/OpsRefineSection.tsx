@@ -10,6 +10,11 @@ interface OpsRefineSectionProps {
   disabledKeyChange: (keys: string[]) => void;
   openKeyChange: (keys: string[]) => void;
   refinedOpsListChange: (refinedOpsList: RefinedOpsList) => void;
+  scrollRef: React.RefObject<HTMLDivElement>;
+  scroll: {
+    handler: (element: React.RefObject<HTMLDivElement>) => void;
+    target: React.RefObject<HTMLDivElement>;
+  };
 }
 
 export default function OpsRefineSection({
@@ -17,7 +22,9 @@ export default function OpsRefineSection({
   orgScope,
   disabledKeyChange,
   openKeyChange,
-  refinedOpsListChange
+  refinedOpsListChange,
+  scrollRef,
+  scroll
 }: OpsRefineSectionProps) {
   const [displayForm, setDisplayForm] = useState(false);
   const [formStatus, setFormStatus] = useState(FORM_STATUS.SUBMITTABLE);
@@ -26,39 +33,40 @@ export default function OpsRefineSection({
 
   const handleProceedSubmit = async () => {
     setFormStatus(FORM_STATUS.PENDING);
-    let meceOpsList: MeceOpsResponse[];
+    let meceOpsList: MeceOpsResponse[] = [];
+    let cleanedOpsList: RefinedOpsList = [];
     try {
-      const fetchPromises = orgOpsList?.groups.map((item) => {
-        const queryParams = new URLSearchParams({
-          majorOperation: item.group,
-          orgScope: orgScope
-        });
+      const fetchPromises =
+        orgOpsList?.groups.map((item) => {
+          const queryParams = new URLSearchParams({
+            majorOperation: item.group,
+            orgScope: orgScope
+          });
 
-        return fetch(`api/mece-ops?${queryParams}`, {
-          method: 'GET',
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8'
-          }
-        }).then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-          }
-          return response.json();
-        });
-      });
+          return fetch(`api/mece-ops?${queryParams}`, {
+            method: 'GET',
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8'
+            }
+          }).then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+          });
+        }) ?? [];
 
       meceOpsList = await Promise.all(fetchPromises);
+      cleanedOpsList = meceOpsList.map((item) => {
+        let opsList = JSON.parse(item.data[0].content[0].text.value);
+        return { majorOperation: opsList.operation, operations: opsList.activities.join(', ') };
+      });
     } catch (error) {
       setFormStatus(FORM_STATUS.ERROR);
     }
 
-    const cleanedOpsList: RefinedOpsList = meceOpsList.map((item) => {
-      let opsList = JSON.parse(item.data[0].content[0].text.value);
-      return { majorOperation: opsList.operation, operations: opsList.activities.join(', ') };
-    });
-
     try {
-      const fetchPromises = cleanedOpsList.map((item) => {
+      const fetchPromises = cleanedOpsList.map((item: RefinedOpsList) => {
         const queryParams = new URLSearchParams({
           operations: item.operations,
           orgScope: orgScope
@@ -70,6 +78,7 @@ export default function OpsRefineSection({
             'Content-type': 'application/json; charset=UTF-8'
           }
         }).then((response) => {
+          console.log(response);
           if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
           }
@@ -78,17 +87,19 @@ export default function OpsRefineSection({
       });
 
       const results = await Promise.all(fetchPromises);
+      console.log(results);
       refinedOpsListChange(results);
       setFormStatus(FORM_STATUS.SUCCESS);
       disabledKeyChange(['4']);
       openKeyChange(['3']);
+      scroll.handler(scroll.target);
     } catch (error) {
       setFormStatus(FORM_STATUS.ERROR);
     }
   };
 
   return (
-    <div className='flex flex-wrap flex-col gap-2 w-full'>
+    <div ref={scrollRef} className='flex flex-wrap flex-col gap-2 w-full'>
       <div className='text-small font-light text-gray-400 pt-2 pb-6'>
         The following is a high level operation map we generated based on the scope you provided in
         the previous section. Each category of operations includes a bullet list of example

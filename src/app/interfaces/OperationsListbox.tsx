@@ -7,7 +7,7 @@ interface OperationsListboxProps {
 }
 
 export function OperationsListbox({ operation, opsSelection }: OperationsListboxProps) {
-  const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set([]));
 
   const selectedValue = useMemo(() => Array.from(selectedKeys).join(', '), [selectedKeys]);
 
@@ -41,27 +41,30 @@ export function OperationsListbox({ operation, opsSelection }: OperationsListbox
       variant='flat'
       selectionMode='multiple'
       selectedKeys={selectedKeys}
+      // @ts-ignore
       onSelectionChange={handleSelectionChange}
     >
-      {operation.rssFilter.definitelyObservable.length > 0 && (
-        <ListboxSection
-          classNames={{
-            heading: keySelectStyles.listBoxSection.heading,
-            divider: 'my-4'
-          }}
-          title='Easy to observe'
-          showDivider
-        >
-          {operation.rssFilter.definitelyObservable.map((op) => {
-            return <ListboxItem key={`${op}`} description={op} textValue={op} />;
-          })}
-        </ListboxSection>
-      )}
       <ListboxSection
-        classNames={{ heading: keySelectStyles.listBoxSection.heading }}
+        classNames={{
+          base: `${operation.rssFilter.definitelyObservable.length === 0 && 'hidden'}`,
+          heading: keySelectStyles.listBoxSection.heading,
+          divider: 'my-4'
+        }}
+        title='Easy to observe'
+        showDivider
+      >
+        {operation.rssFilter.definitelyObservable.map((op: string) => {
+          return <ListboxItem key={`${op}`} description={op} textValue={op} />;
+        })}
+      </ListboxSection>
+      <ListboxSection
+        classNames={{
+          base: `${operation.rssFilter.maybeObservable.length === 0 && 'hidden'}`,
+          heading: keySelectStyles.listBoxSection.heading
+        }}
         title='Difficult to observe'
       >
-        {operation.rssFilter.maybeObservable.map((op) => {
+        {operation.rssFilter.maybeObservable.map((op: string) => {
           return <ListboxItem key={`${op}`} description={op} textValue={op} />;
         })}
       </ListboxSection>

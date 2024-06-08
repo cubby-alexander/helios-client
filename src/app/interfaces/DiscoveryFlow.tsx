@@ -5,7 +5,7 @@ import {
   GlobeAmericasIcon,
   WrenchIcon
 } from '@heroicons/react/16/solid';
-import { useRef, useState } from 'react';
+import { RefObject, useRef, useState } from 'react';
 import { OrgOpsList, RefinedOpsList } from '../types/DiscoveryFormTypes';
 import OrgScopeSection from './OrgScopeSection';
 import OpsRefineSection from './OpsRefineSection';
@@ -15,10 +15,12 @@ export default function DiscoveryFlow() {
   const [openKeys, setOpenKeys] = useState<string[]>(['1']);
   const [disabledKeys, setDisabledKeys] = useState<string[]>(['2', '3', '4']);
   const [orgScope, setOrgScope] = useState<string>('');
-  const [orgOpsList, setOrgOpsList] = useState<OrgOpsList | []>([]);
+  const [orgOpsList, setOrgOpsList] = useState<OrgOpsList | null>(null);
   const [refinedOpsList, setRefinedOpsList] = useState<RefinedOpsList | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const sectionRef = useRef(null);
+  const refineRef = useRef<HTMLDivElement | null>(null);
+  const filterRef = useRef<HTMLDivElement | null>(null);
+  const analyzeRef = useRef<HTMLDivElement | null>(null);
 
   const itemClasses = {
     base: 'w-full',
@@ -27,15 +29,16 @@ export default function DiscoveryFlow() {
     content: 'text-small px-2 text-xs'
   };
 
-  const handleScopeAccordionFocus = (expanded: boolean) => {
-    if (expanded && textareaRef.current && 'focus' in textareaRef.current) {
+  // @ts-ignore
+  const handleScopeAccordionFocus = (event: FocusEvent<Element, Element>) => {
+    if (event && textareaRef.current && 'focus' in textareaRef.current) {
       (textareaRef.current as HTMLTextAreaElement).focus();
     }
   };
 
-  const handleScroll = () => {
-    if (sectionRef.current) {
-      sectionRef.current.scrollIntoView({ behavior: 'smooth' });
+  const handleScroll = (element: RefObject<HTMLDivElement>) => {
+    if (element.current) {
+      element.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -44,7 +47,7 @@ export default function DiscoveryFlow() {
       className='relative w-screen h-[70vh] flex flex-col justify-start items-center text-left my-2 z-20'
       hideScrollBar={true}
     >
-      <div className={`text-gray-400 font-extralight text-3xl mb-4`} onClick={handleScroll}>
+      <div className={`text-gray-400 font-extralight text-3xl mb-4`}>
         Discover Satellite Services
       </div>
       <Accordion
@@ -74,6 +77,10 @@ export default function DiscoveryFlow() {
             orgOpsChange={(ops: OrgOpsList) => setOrgOpsList(ops)}
             disabledKeyChange={setDisabledKeys}
             openKeyChange={setOpenKeys}
+            scroll={{
+              handler: handleScroll,
+              target: refineRef
+            }}
           />
         </AccordionItem>
         <AccordionItem
@@ -89,6 +96,11 @@ export default function DiscoveryFlow() {
             disabledKeyChange={setDisabledKeys}
             openKeyChange={setOpenKeys}
             refinedOpsListChange={setRefinedOpsList}
+            scrollRef={refineRef}
+            scroll={{
+              handler: handleScroll,
+              target: filterRef
+            }}
           />
         </AccordionItem>
         <AccordionItem
@@ -98,21 +110,26 @@ export default function DiscoveryFlow() {
           title={<p className='font-medium'>Select Key Operations</p>}
           subtitle='What do you need?'
         >
-          <SelectKeyOpsSection refinedOpsList={refinedOpsList} />
+          <SelectKeyOpsSection
+            refinedOpsList={refinedOpsList}
+            scrollRef={filterRef}
+            scroll={{
+              handler: handleScroll,
+              target: analyzeRef
+            }}
+          />
         </AccordionItem>
         <AccordionItem
           key='4'
           aria-label='Card expired'
           startContent={<GlobeAmericasIcon className='text-slate-400 h-7 w-7' />}
           subtitle='What unlocks value?'
-          title={
-            <p ref={sectionRef} className='font-medium'>
-              Generate Satellite Solutions
-            </p>
-          }
+          title={<p className='font-medium'>Generate Satellite Solutions</p>}
         >
-          Hey there! I&apos;m a content block. I&apos;m here to help you add content to your
-          website. Click the Edit button to get started.
+          <div ref={analyzeRef}>
+            Hey there! I&apos;m a content block. I&apos;m here to help you add content to your
+            website. Click the Edit button to get started.
+          </div>
         </AccordionItem>
       </Accordion>
     </ScrollShadow>
