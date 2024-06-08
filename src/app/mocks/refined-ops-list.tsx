@@ -11,22 +11,14 @@ export const mockRefinedOpsList: RefinedOpsList[] = [
   {
     majorOperation: 'Emergency Medical Services',
     rssFilter: {
-      definitelyObservable: ['Paramedic', 'Ambulance', 'Paramedic', 'Ambulance', 'Defibrillator'],
+      definitelyObservable: ['Paramedic', 'Ambulance', 'Defibrillator'],
       maybeObservable: ['First Aid Kit', 'Oxygen Mask']
     }
   },
   {
     majorOperation: 'Fire Prevention',
     rssFilter: {
-      definitelyObservable: [
-        'Fire Marshal',
-        'Fire Code',
-        'Fire Inspection',
-        'Fire Code',
-        'Fire Inspection',
-        'Fire Code',
-        'Fire Inspection'
-      ],
+      definitelyObservable: ['Fire Marshal', 'Fire Code', 'Fire Inspection'],
       maybeObservable: ['Fire Extinguisher', 'Smoke Detector']
     }
   },
@@ -38,35 +30,35 @@ export const mockRefinedOpsList: RefinedOpsList[] = [
     }
   },
   {
-    majorOperation: 'Emergency Medical Services Medical Services',
+    majorOperation: 'Emergency Medical Services Advanced',
+    rssFilter: {
+      definitelyObservable: ['Advanced Paramedic', 'Advanced Ambulance', 'Advanced Defibrillator'],
+      maybeObservable: ['Advanced First Aid Kit', 'Advanced Oxygen Mask']
+    }
+  },
+  {
+    majorOperation: 'Fire Prevention Advanced',
     rssFilter: {
       definitelyObservable: [
-        'Paramedic Paramedic Paramedic Paramedic Paramedic ',
-        'Ambulance',
-        'Defibrillator'
+        'Advanced Fire Marshal',
+        'Advanced Fire Code',
+        'Advanced Fire Inspection'
       ],
-      maybeObservable: ['First Aid Kit', 'Oxygen Mask']
+      maybeObservable: ['Advanced Fire Extinguisher', 'Advanced Smoke Detector']
     }
   },
   {
-    majorOperation: 'Fire Prevention',
+    majorOperation: 'Emergency Medical Services Basic',
     rssFilter: {
-      definitelyObservable: [],
-      maybeObservable: ['Fire Extinguisher', 'Smoke Detector']
+      definitelyObservable: ['Basic Paramedic', 'Basic Ambulance', 'Basic Defibrillator'],
+      maybeObservable: ['Basic First Aid Kit', 'Basic Oxygen Mask']
     }
   },
   {
-    majorOperation: 'Emergency Medical Services',
+    majorOperation: 'Fire Prevention Basic',
     rssFilter: {
-      definitelyObservable: ['Paramedic', 'Ambulance', 'Defibrillator'],
-      maybeObservable: ['First Aid Kit', 'Oxygen Mask']
-    }
-  },
-  {
-    majorOperation: 'Fire Prevention',
-    rssFilter: {
-      definitelyObservable: [],
-      maybeObservable: ['Fire Extinguisher', 'Smoke Detector']
+      definitelyObservable: ['Basic Fire Marshal', 'Basic Fire Code', 'Basic Fire Inspection'],
+      maybeObservable: ['Basic Fire Extinguisher', 'Basic Smoke Detector']
     }
   }
 ];

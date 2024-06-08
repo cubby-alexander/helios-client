@@ -31,7 +31,7 @@ export default function OpsRefineSection({
       const fetchPromises = orgOpsList?.groups.map((item) => {
         const queryParams = new URLSearchParams({
           majorOperation: item.group,
-          orgScope: 'a fire department'
+          orgScope: orgScope
         });
 
         return fetch(`api/mece-ops?${queryParams}`, {
@@ -48,7 +48,6 @@ export default function OpsRefineSection({
       });
 
       meceOpsList = await Promise.all(fetchPromises);
-      console.log(meceOpsList);
     } catch (error) {
       setFormStatus(FORM_STATUS.ERROR);
     }
@@ -58,13 +57,11 @@ export default function OpsRefineSection({
       return { majorOperation: opsList.operation, operations: opsList.activities.join(', ') };
     });
 
-    console.log(cleanedOpsList);
-
     try {
       const fetchPromises = cleanedOpsList.map((item) => {
         const queryParams = new URLSearchParams({
           operations: item.operations,
-          orgScope: 'a fire department'
+          orgScope: orgScope
         });
 
         return fetch(`api/rss-filtering?${queryParams}`, {
@@ -81,12 +78,10 @@ export default function OpsRefineSection({
       });
 
       const results = await Promise.all(fetchPromises);
-      console.log(results);
       refinedOpsListChange(results);
       setFormStatus(FORM_STATUS.SUCCESS);
       disabledKeyChange(['4']);
       openKeyChange(['3']);
-      console.log('done');
     } catch (error) {
       setFormStatus(FORM_STATUS.ERROR);
     }
@@ -158,7 +153,7 @@ export default function OpsRefineSection({
           variant='flat'
           className='self-end mt-6'
           isLoading={formStatus === FORM_STATUS.PENDING}
-          onClick={displayForm ? handleRefineSubmit : handleProceedSubmit}
+          onClick={() => (displayForm ? handleRefineSubmit() : handleProceedSubmit())}
         >
           {displayForm ? 'Refine' : 'Proceed'}
         </Button>

@@ -5,25 +5,20 @@ import {
   GlobeAmericasIcon,
   WrenchIcon
 } from '@heroicons/react/16/solid';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { OrgOpsList, RefinedOpsList } from '../types/DiscoveryFormTypes';
 import OrgScopeSection from './OrgScopeSection';
-import { mockOrgOpsList } from '../mocks/org-ops-list';
 import OpsRefineSection from './OpsRefineSection';
 import { SelectKeyOpsSection } from './SelectKeyOpsSection';
 
 export default function DiscoveryFlow() {
-  const [openKeys, setOpenKeys] = useState<string[]>(['1', '2', '3']);
-  const [disabledKeys, setDisabledKeys] = useState<string[]>(['4']);
+  const [openKeys, setOpenKeys] = useState<string[]>(['1']);
+  const [disabledKeys, setDisabledKeys] = useState<string[]>(['2', '3', '4']);
   const [orgScope, setOrgScope] = useState<string>('');
-  const [orgOpsList, setOrgOpsList] = useState<OrgOpsList | null>(mockOrgOpsList);
+  const [orgOpsList, setOrgOpsList] = useState<OrgOpsList | []>([]);
   const [refinedOpsList, setRefinedOpsList] = useState<RefinedOpsList | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const sectionRef = useRef(null);
-
-  useEffect(() => {
-    console.log('openKeys:', openKeys);
-  }, [openKeys]);
 
   const itemClasses = {
     base: 'w-full',
