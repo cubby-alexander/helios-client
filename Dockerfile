@@ -13,13 +13,19 @@ RUN npm install
 # Copy the file from your host to your current location
 COPY . .
 
+# Set the environment variables
+ARG OPENAI_API_KEY
+ARG OPENAI_MECE_ORG_OPS_ID
+ARG OPENAI_MECE_OPS_ACTIVITY_ID
+ARG OPENAI_RSS_FILTERING_ID
+
 # Set the environment variable
 ENV OPENAI_API_KEY=${OPENAI_API_KEY}
 ENV OPENAI_MECE_ORG_OPS_ID=${OPENAI_MECE_ORG_OPS_ID}
 ENV OPENAI_MECE_OPS_ACTIVITY_ID=${OPENAI_MECE_OPS_ACTIVITY_ID}
 ENV OPENAI_RSS_FILTERING_ID=${OPENAI_RSS_FILTERING_ID}
 
-RUN echo env
+RUN env
 
 # Build the Next.js app
 RUN npm run build
