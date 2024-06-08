@@ -51,7 +51,7 @@ export function OperationsListbox({ operation, opsSelection }: OperationsListbox
           divider: 'my-4'
         }}
         title='Easy to observe'
-        showDivider
+        showDivider={operation.rssFilter.maybeObservable.length > 0}
       >
         {operation.rssFilter.definitelyObservable.map((op: string) => {
           return <ListboxItem key={`${op}`} description={op} textValue={op} />;

@@ -54,6 +54,8 @@ jobs:
           DO_USER: ${{ secrets.DO_USER }}
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_APP_NAME: ${{ secrets.DOCKER_APP_NAME }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
         run: |
           echo "$DO_SSH_PRIVATE_KEY" | tr -d '\r' > private_key
           chmod 600 private_key
@@ -63,5 +65,8 @@ jobs:
             docker rm $DOCKER_APP_NAME || true
             docker run -d -p 80:3000 --name $DOCKER_APP_NAME \
               -e OPENAI_API_KEY=$OPENAI_API_KEY \
+              -e OPENAI_MECE_ORG_OPS_ID=$OPENAI_MECE_ORG_OPS_ID \
+              -e OPENAI_MECE_OPS_ACTIVITY=OPENAI_MECE_OPS_ACTIVITY \
+              -e OPENAI_RSS_FILTERING_ID=OPENAI_RSS_FILTERING_ID \
               $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
           EOF
