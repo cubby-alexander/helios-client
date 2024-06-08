@@ -1,25 +1,95 @@
-import { OrgOpsList, OrgOpsListItem } from '../types/DiscoveryFormTypes';
+import { OrgOpsList, OrgOpsListItem, RefinedOpsList } from '../types/DiscoveryFormTypes';
 import { Button, Textarea } from '@nextui-org/react';
 import { useState } from 'react';
+import { FORM_STATUS } from '../enums';
+import { MeceOpsResponse } from '../api/api-types';
 
 interface OpsRefineSectionProps {
   orgOpsList: OrgOpsList | null;
+  orgScope: string;
   disabledKeyChange: (keys: string[]) => void;
   openKeyChange: (keys: string[]) => void;
+  refinedOpsListChange: (refinedOpsList: RefinedOpsList) => void;
 }
 
 export default function OpsRefineSection({
   orgOpsList,
+  orgScope,
   disabledKeyChange,
-  openKeyChange
+  openKeyChange,
+  refinedOpsListChange
 }: OpsRefineSectionProps) {
   const [displayForm, setDisplayForm] = useState(false);
+  const [formStatus, setFormStatus] = useState(FORM_STATUS.SUBMITTABLE);
 
   const handleRefineSubmit = () => {};
 
-  const handleProceedSubmit = () => {
-    openKeyChange(['3']);
-    disabledKeyChange(['4']);
+  const handleProceedSubmit = async () => {
+    setFormStatus(FORM_STATUS.PENDING);
+    let meceOpsList: MeceOpsResponse[];
+    try {
+      const fetchPromises = orgOpsList?.groups.map((item) => {
+        const queryParams = new URLSearchParams({
+          majorOperation: item.group,
+          orgScope: 'a fire department'
+        });
+
+        return fetch(`api/mece-ops?${queryParams}`, {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+          }
+        }).then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+        });
+      });
+
+      meceOpsList = await Promise.all(fetchPromises);
+      console.log(meceOpsList);
+    } catch (error) {
+      setFormStatus(FORM_STATUS.ERROR);
+    }
+
+    const cleanedOpsList: RefinedOpsList = meceOpsList.map((item) => {
+      let opsList = JSON.parse(item.data[0].content[0].text.value);
+      return { majorOperation: opsList.operation, operations: opsList.activities.join(', ') };
+    });
+
+    console.log(cleanedOpsList);
+
+    try {
+      const fetchPromises = cleanedOpsList.map((item) => {
+        const queryParams = new URLSearchParams({
+          operations: item.operations,
+          orgScope: 'a fire department'
+        });
+
+        return fetch(`api/rss-filtering?${queryParams}`, {
+          method: 'GET',
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+          }
+        }).then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json().then((data) => ({ ...item, ...data }));
+        });
+      });
+
+      const results = await Promise.all(fetchPromises);
+      console.log(results);
+      refinedOpsListChange(results);
+      setFormStatus(FORM_STATUS.SUCCESS);
+      disabledKeyChange(['4']);
+      openKeyChange(['3']);
+      console.log('done');
+    } catch (error) {
+      setFormStatus(FORM_STATUS.ERROR);
+    }
   };
 
   return (
@@ -48,8 +118,9 @@ export default function OpsRefineSection({
         Is this operations map accurate? Note a few things:
         <ul className={'list-disc my-2 pl-6'}>
           <li className='my-1'>
-            Major operations (e.g. &quot;{orgOpsList?.groups[0].group}) shouldn&apos;t have
-            significant overlap, but should collectively cover your activities
+            Major operations (e.g. &quot;{orgOpsList?.groups[0].group},&quot; &quot;
+            {orgOpsList?.groups[1].group}&quot;) should be distinct and should collectively cover
+            your activities
           </li>
           <li className='my-1'>
             The bullet list of activities (e.g. &quot;{orgOpsList?.groups[0].activities[0]}) are
@@ -86,6 +157,7 @@ export default function OpsRefineSection({
           color='primary'
           variant='flat'
           className='self-end mt-6'
+          isLoading={formStatus === FORM_STATUS.PENDING}
           onClick={displayForm ? handleRefineSubmit : handleProceedSubmit}
         >
           {displayForm ? 'Refine' : 'Proceed'}

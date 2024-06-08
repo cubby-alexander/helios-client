@@ -5,18 +5,25 @@ import {
   GlobeAmericasIcon,
   WrenchIcon
 } from '@heroicons/react/16/solid';
-import { useRef, useState } from 'react';
-import { OrgOpsList } from '../types/DiscoveryFormTypes';
+import { useEffect, useRef, useState } from 'react';
+import { OrgOpsList, RefinedOpsList } from '../types/DiscoveryFormTypes';
 import OrgScopeSection from './OrgScopeSection';
 import { mockOrgOpsList } from '../mocks/org-ops-list';
 import OpsRefineSection from './OpsRefineSection';
+import { SelectKeyOpsSection } from './SelectKeyOpsSection';
 
 export default function DiscoveryFlow() {
   const [openKeys, setOpenKeys] = useState<string[]>(['1', '2', '3']);
   const [disabledKeys, setDisabledKeys] = useState<string[]>(['4']);
+  const [orgScope, setOrgScope] = useState<string>('');
   const [orgOpsList, setOrgOpsList] = useState<OrgOpsList | null>(mockOrgOpsList);
+  const [refinedOpsList, setRefinedOpsList] = useState<RefinedOpsList | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const sectionRef = useRef(null);
+
+  useEffect(() => {
+    console.log('openKeys:', openKeys);
+  }, [openKeys]);
 
   const itemClasses = {
     base: 'w-full',
@@ -68,6 +75,7 @@ export default function DiscoveryFlow() {
         >
           <OrgScopeSection
             textRef={textareaRef}
+            orgScopeChange={(scope: string) => setOrgScope(scope)}
             orgOpsChange={(ops: OrgOpsList) => setOrgOpsList(ops)}
             disabledKeyChange={setDisabledKeys}
             openKeyChange={setOpenKeys}
@@ -82,8 +90,10 @@ export default function DiscoveryFlow() {
         >
           <OpsRefineSection
             orgOpsList={orgOpsList}
+            orgScope={orgScope}
             disabledKeyChange={setDisabledKeys}
             openKeyChange={setOpenKeys}
+            refinedOpsListChange={setRefinedOpsList}
           />
         </AccordionItem>
         <AccordionItem
@@ -93,8 +103,7 @@ export default function DiscoveryFlow() {
           title={<p className='font-medium'>Select Key Operations</p>}
           subtitle='What do you need?'
         >
-          Hey there! I&apos;m a content block. I&apos;m here to help you add content to your
-          website. Click the Edit button to get started.
+          <SelectKeyOpsSection refinedOpsList={refinedOpsList} />
         </AccordionItem>
         <AccordionItem
           key='4'

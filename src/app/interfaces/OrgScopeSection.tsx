@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 interface OrgScopeSectionProps {
   textRef: React.RefObject<HTMLTextAreaElement>;
+  orgScopeChange: (scope: string) => void;
   orgOpsChange: (OrgOpsList) => void;
   disabledKeyChange: (keys: string[]) => void;
   openKeyChange: (keys: string[]) => void;
@@ -11,6 +12,7 @@ interface OrgScopeSectionProps {
 
 export default function OrgScopeSection({
   textRef,
+  orgScopeChange,
   orgOpsChange,
   disabledKeyChange,
   openKeyChange
@@ -43,6 +45,7 @@ export default function OrgScopeSection({
       })
       .then((data) => {
         setFormStatus(FORM_STATUS.SUCCESS);
+        orgScopeChange(value);
         orgOpsChange(JSON.parse(data[0].content[0].text.value));
         disabledKeyChange(['3', '4']);
         openKeyChange(['2']);
