@@ -73,3 +73,4 @@ jobs:
             DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} DOCKER_APP_NAME=${{ secrets.DOCKER_APP_NAME }} docker-compose pull
             DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} DOCKER_APP_NAME=${{ secrets.DOCKER_APP_NAME }} docker-compose up -d
           EOF
+
