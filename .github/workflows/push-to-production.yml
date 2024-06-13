@@ -70,6 +70,9 @@ jobs:
           scp -i private_key -o StrictHostKeyChecking=no docker-compose.yml nginx.conf $DO_USER@$DO_SERVER_IP:/home/$DO_USER/deployment
           ssh -i private_key -o StrictHostKeyChecking=no -t $DO_USER@$DO_SERVER_IP << EOF
             cd /home/$DO_USER/deployment
+            docker-compose down
+            docker rm -f $(docker ps -a -q)
+            docker volume rm $(docker volume ls -q)
             DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} DOCKER_APP_NAME=${{ secrets.DOCKER_APP_NAME }} docker-compose pull
             DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} DOCKER_APP_NAME=${{ secrets.DOCKER_APP_NAME }} docker-compose up -d
           EOF
