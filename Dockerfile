@@ -36,7 +36,7 @@ RUN cp -r public .next/standalone \
     && cp -r .next/cache .next/standalone/.next
 
 # Final stage to create a slim image
-FROM node:19-alpine as runner
+FROM node:19-slim as runner
 
 # Set the working directory
 WORKDIR /app
