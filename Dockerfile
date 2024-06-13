@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:19-bullseye-slim
+FROM node:19-alpine AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -35,18 +35,40 @@ RUN cp -r public .next/standalone \
     && cp -r .next/static .next/standalone/.next \
     && cp -r .next/cache .next/standalone/.next
 
-# Install Python and necessary packages
-RUN apt-get update && apt-get install -y python3 python3-pip
+# Final stage to create a slim image
+FROM node:19-alpine as runner
 
-# Use pip to install the openai package
-RUN pip3 install openai
+# Set the working directory
+WORKDIR /app
+
+# Copy only the necessary files from the builder stage
+COPY --from=builder /app/.next/standalone ./.next/standalone
+COPY --from=builder /app/public ./public
+
+# Install Python and necessary packages
+RUN apt-get update && apt-get install -y python3 python3-pip \
+    && pip3 install openai
 
 # Copy the requirements.txt and install Python dependencies
 COPY src/app/services/requirements.txt .
 RUN pip3 install -r requirements.txt
 
+# Clean up apt cache and temporary files
+RUN apt-get remove -y python3-pip && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Inform Docker that the container is listening on the specified port at runtime
 EXPOSE 3000
+
+# Set the environment variables
+ARG OPENAI_API_KEY
+ARG OPENAI_MECE_ORG_OPS_ID
+ARG OPENAI_MECE_OPS_ACTIVITY_ID
+ARG OPENAI_RSS_FILTERING_ID
+
+ENV OPENAI_API_KEY=${OPENAI_API_KEY}
+ENV OPENAI_MECE_ORG_OPS_ID=${OPENAI_MECE_ORG_OPS_ID}
+ENV OPENAI_MECE_OPS_ACTIVITY_ID=${OPENAI_MECE_OPS_ACTIVITY_ID}
+ENV OPENAI_RSS_FILTERING_ID=${OPENAI_RSS_FILTERING_ID}
 
 # Run the specified command within the container
 CMD [ "node", ".next/standalone/server.js" ]
