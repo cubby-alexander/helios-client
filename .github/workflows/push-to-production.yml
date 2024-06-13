@@ -67,10 +67,9 @@ jobs:
         run: |
           echo "$DO_SSH_PRIVATE_KEY" | tr -d '\r' > private_key
           chmod 600 private_key
+          scp -i private_key -o StrictHostKeyChecking=no docker-compose.yml nginx.conf $DO_USER@$DO_SERVER_IP:/home/$DO_USER/deployment
           ssh -i private_key -o StrictHostKeyChecking=no -t $DO_USER@$DO_SERVER_IP << EOF
-            docker pull $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
-            docker stop $DOCKER_APP_NAME || true
-            docker rm $DOCKER_APP_NAME || true
-            docker run -d -p 80:3000 --name $DOCKER_APP_NAME \
-              $DOCKER_HUB_USERNAME/$DOCKER_APP_NAME:latest
+            cd /home/$DO_USER/deployment
+            DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} DOCKER_APP_NAME=${{ secrets.DOCKER_APP_NAME }} docker-compose pull
+            DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} DOCKER_APP_NAME=${{ secrets.DOCKER_APP_NAME }} docker-compose up -d
           EOF

@@ -1,0 +1,28 @@
+version: '3'
+services:
+  nextjs:
+    image: ${DOCKER_HUB_USERNAME}/${DOCKER_APP_NAME}:latest
+    container_name: nextjs
+    environment:
+      - NODE_ENV=production
+    expose:
+      - "3000"
+    networks:
+      - webnet
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - nextjs
+    networks:
+      - webnet
+
+networks:
+  webnet:
