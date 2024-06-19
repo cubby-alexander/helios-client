@@ -13,6 +13,9 @@
     "*.{js, jsx,ts,tsx}": [
       "eslint --quiet --fix"
     ],
+    "*.{ts,tsx}": [
+      "tsc --noEmit"
+    ],
     "*.{json,js,ts,jsx,tsx,html}": [
       "prettier --write --ignore-unknown"
     ]
