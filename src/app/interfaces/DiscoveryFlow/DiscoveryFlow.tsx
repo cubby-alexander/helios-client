@@ -14,8 +14,8 @@ import { DiscoverySection } from './DiscoverySection';
 import { mockOpsQuestionList } from '../../mocks/ops-question-list';
 
 export default function DiscoveryFlow() {
-  const [openKeys, setOpenKeys] = useState<string[]>(['4']);
-  const [disabledKeys, setDisabledKeys] = useState<string[]>(['2', '3']);
+  const [openKeys, setOpenKeys] = useState<string[]>(['1']);
+  const [disabledKeys, setDisabledKeys] = useState<string[]>(['2', '3', '4']);
   const [orgScope, setOrgScope] = useState<string>('');
   const [orgOpsList, setOrgOpsList] = useState<OrgOpsList | null>(null);
   const [refinedOpsList, setRefinedOpsList] = useState<RefinedOpsList | null>(null);
@@ -135,7 +135,11 @@ export default function DiscoveryFlow() {
           subtitle='What unlocks value?'
           title={<p className='font-medium'>Generate Satellite Solutions</p>}
         >
-          <DiscoverySection scrollRef={analyzeRef} opsQuestionList={opsQuestionList} />
+          <DiscoverySection
+            orgScope={orgScope}
+            opsQuestionList={opsQuestionList}
+            scrollRef={analyzeRef}
+          />
         </AccordionItem>
       </Accordion>
     </ScrollShadow>

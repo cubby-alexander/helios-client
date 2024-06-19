@@ -48,7 +48,7 @@ export function SelectKeyOpsSection({
               operation: operation,
               orgScope: orgScope
             });
-            return fetch(`api/satellite-applications?${queryParams}`, {
+            return fetch(`api/application-questions?${queryParams}`, {
               method: 'GET',
               headers: {
                 'Content-type': 'application/json; charset=UTF-8'
@@ -65,10 +65,10 @@ export function SelectKeyOpsSection({
         }) ?? [];
       const questions = await Promise.all(opsQuestions.flat());
       console.log(questions);
-      // opsQuestionListChange(questions);
+      opsQuestionListChange(questions);
       setFormStatus(FORM_STATUS.SUBMITTABLE);
       disabledKeyChange([]);
-      openKeyChange(['3', '4']);
+      openKeyChange(['4']);
       scroll.handler(scroll.target);
     } catch (error) {
       console.error(error);

@@ -6,19 +6,17 @@ const openai = new OpenAI();
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const newThread = await openai.beta.threads.create();
+  const operation = searchParams.get('operation');
   const orgScope = searchParams.get('orgScope');
-  const activity = searchParams.get('activity');
 
   if (!process.env.OPENAI_SAT_APP_ID) {
-    throw new Error('Environment variable OPENAI_SAT_APP_ID is not defined');
+    throw new Error('Environment variable OPENAI_APP_QUESTIONS_ID is not defined');
   }
-  const openAiSatAppId = process.env.OPENAI_SAT_APP_ID;
+  const openAiSatAppId = process.env.OPENAI_APP_QUESTIONS_ID;
 
   const threadMessages = await openai.beta.threads.messages.create(newThread.id, {
     role: 'user',
-    content: `organizational scope: ${orgScope},
-    activity: ${activity},
-    user provided info: ${searchParams.get('userProvidedInfo')} `
+    content: `organizational scope: ${orgScope}, operation: ${operation}`
   });
 
   const run = await openai.beta.threads.runs.createAndPoll(newThread.id, {
@@ -30,7 +28,7 @@ export async function GET(req: NextRequest) {
     const contentElement = messages.data[0].content[0];
     // @ts-ignore
     const rawAssistantResponse = JSON.parse(contentElement.text.value);
-    return NextResponse.json({ application: rawAssistantResponse.application }, {
+    return NextResponse.json({ questions: rawAssistantResponse.questions }, {
       status: 200
     } as ResponseInit);
   } else {

@@ -1,8 +1,10 @@
 import { RefObject, useState } from 'react';
 import { OpsQuestionSet, OpsQuestionList } from '../../types/DiscoveryFormTypes';
-import { Divider, Textarea } from '@nextui-org/react';
+import { Button, Divider, Textarea } from '@nextui-org/react';
+import { FORM_STATUS } from '../../enums';
 
 interface DiscoverySectionProps {
+  orgScope: string;
   opsQuestionList: OpsQuestionList | null;
   scrollRef: RefObject<HTMLDivElement>;
 }
@@ -24,9 +26,46 @@ const buildFormObject = (opsListAndQ: OpsQuestionList | null) => {
   return formValues;
 };
 
-export function DiscoverySection({ opsQuestionList, scrollRef }: DiscoverySectionProps) {
-  const [selectedTab, setSelectedTab] = useState(0);
+export function DiscoverySection({ orgScope, opsQuestionList, scrollRef }: DiscoverySectionProps) {
+  const [formStatus, setFormStatus] = useState(FORM_STATUS.INCOMPLETE);
+  const [selectedTab, setSelectedTab] = useState<number>(0);
   const [formValues, setFormValues] = useState<any>(buildFormObject(opsQuestionList));
+
+  const handleGenerateSubmit = async () => {
+    setFormStatus(FORM_STATUS.PENDING);
+    let formInputs: any[] = [];
+    if (opsQuestionList) {
+      opsQuestionList[selectedTab].questions.forEach((question, index) => {
+        formInputs.push({
+          question: question,
+          answer: formValues[opsQuestionList[selectedTab].operation][index]
+        });
+      });
+    }
+    try {
+      const queryParams = new URLSearchParams({
+        orgScope: orgScope,
+        activity: opsQuestionList ? opsQuestionList[selectedTab].operation : '',
+        userProvidedInfo: JSON.stringify(formInputs)
+      });
+      const satelliteUseCase = fetch(`api/satellite-application?${queryParams}`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json().then((data) => {
+          return data;
+        });
+      });
+    } catch (error) {
+      setFormStatus(FORM_STATUS.ERROR);
+      console.log(error);
+    }
+  };
 
   const generateActivityTabs = () => {
     const activityTabs: JSX.Element[] = [];
@@ -86,12 +125,26 @@ export function DiscoverySection({ opsQuestionList, scrollRef }: DiscoverySectio
         Lastly, provide specific details about the activities in each tab below. We&apos;ve
         generated some questions about each activity that will help us understand how they are
         conducted in your organization. Please answer as many questions as you can.
+        <br />
+        <br />
+        When finished, click the &quot;Generate&quot; button to run the use case generator.
       </div>
       <Divider orientation={'horizontal'} />
       <div className='flex flex-row justify-center items-center text-center text-base font-md gap-8 flex-nowrap w-full pt-8 pb-6'>
         {generateActivityTabs()}
       </div>
       <div>{generateActivityQuestions()}</div>
+      <div className='self-end flex-row gap-6'>
+        <Button
+          color='primary'
+          variant='flat'
+          className='self-end mt-6'
+          isLoading={formStatus === FORM_STATUS.PENDING}
+          onClick={handleGenerateSubmit}
+        >
+          Generate
+        </Button>
+      </div>
     </div>
   );
 }
