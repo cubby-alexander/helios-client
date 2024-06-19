@@ -7,11 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build-docker": "bash ./docker-build.sh"
   },
   "lint-staged": {
     "*.{js, jsx,ts,tsx}": [
       "eslint --quiet --fix"
+    ],
+    "*.{ts,tsx}": [
+      "tsc --noEmit --jsx preserve --skipLibCheck"
     ],
     "*.{json,js,ts,jsx,tsx,html}": [
       "prettier --write --ignore-unknown"

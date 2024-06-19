@@ -10,3 +10,10 @@ export interface OrgOpsListItem {
 export interface RefinedOpsList {
   [key: string]: any;
 }
+
+export interface OpsQuestionSet {
+  questions: string[];
+  operation: string;
+}
+
+export type OpsQuestionList = OpsQuestionSet[];
