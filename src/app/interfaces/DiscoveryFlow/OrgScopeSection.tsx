@@ -1,7 +1,7 @@
 import { Button, Textarea } from '@nextui-org/react';
-import { FORM_STATUS } from '../enums';
+import { FORM_STATUS } from '../../enums';
 import { useState } from 'react';
-import { OrgOpsList } from '../types/DiscoveryFormTypes';
+import { OrgOpsList } from '../../types/DiscoveryFormTypes';
 
 interface OrgScopeSectionProps {
   textRef: React.RefObject<HTMLTextAreaElement>;

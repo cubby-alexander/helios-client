@@ -1,8 +1,8 @@
-import { OrgOpsList, OrgOpsListItem, RefinedOpsList } from '../types/DiscoveryFormTypes';
+import { OrgOpsList, OrgOpsListItem, RefinedOpsList } from '../../types/DiscoveryFormTypes';
 import { Button, Textarea } from '@nextui-org/react';
 import { useState } from 'react';
-import { FORM_STATUS } from '../enums';
-import { MeceOpsResponse } from '../api/api-types';
+import { FORM_STATUS } from '../../enums';
+import { MeceOpsResponse } from '../../api/api-types';
 
 interface OpsRefineSectionProps {
   orgOpsList: OrgOpsList | null;
@@ -78,7 +78,6 @@ export default function OpsRefineSection({
             'Content-type': 'application/json; charset=UTF-8'
           }
         }).then((response) => {
-          console.log(response);
           if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
           }

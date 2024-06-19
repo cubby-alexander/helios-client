@@ -6,17 +6,22 @@ import {
   WrenchIcon
 } from '@heroicons/react/16/solid';
 import { RefObject, useRef, useState } from 'react';
-import { OrgOpsList, RefinedOpsList } from '../types/DiscoveryFormTypes';
+import { OpsQuestionList, OrgOpsList, RefinedOpsList } from '../../types/DiscoveryFormTypes';
 import OrgScopeSection from './OrgScopeSection';
 import OpsRefineSection from './OpsRefineSection';
 import { SelectKeyOpsSection } from './SelectKeyOpsSection';
+import { DiscoverySection } from './DiscoverySection';
+import { mockOpsQuestionList } from '../../mocks/ops-question-list';
 
 export default function DiscoveryFlow() {
-  const [openKeys, setOpenKeys] = useState<string[]>(['1']);
-  const [disabledKeys, setDisabledKeys] = useState<string[]>(['2', '3', '4']);
+  const [openKeys, setOpenKeys] = useState<string[]>(['4']);
+  const [disabledKeys, setDisabledKeys] = useState<string[]>(['2', '3']);
   const [orgScope, setOrgScope] = useState<string>('');
   const [orgOpsList, setOrgOpsList] = useState<OrgOpsList | null>(null);
   const [refinedOpsList, setRefinedOpsList] = useState<RefinedOpsList | null>(null);
+  const [opsQuestionList, setOpsQuestionList] = useState<OpsQuestionList | null>(
+    mockOpsQuestionList
+  );
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const refineRef = useRef<HTMLDivElement | null>(null);
   const filterRef = useRef<HTMLDivElement | null>(null);
@@ -112,6 +117,10 @@ export default function DiscoveryFlow() {
         >
           <SelectKeyOpsSection
             refinedOpsList={refinedOpsList}
+            orgScope={orgScope}
+            opsQuestionListChange={setOpsQuestionList}
+            disabledKeyChange={setDisabledKeys}
+            openKeyChange={setOpenKeys}
             scrollRef={filterRef}
             scroll={{
               handler: handleScroll,
@@ -126,10 +135,7 @@ export default function DiscoveryFlow() {
           subtitle='What unlocks value?'
           title={<p className='font-medium'>Generate Satellite Solutions</p>}
         >
-          <div ref={analyzeRef}>
-            Hey there! I&apos;m a content block. I&apos;m here to help you add content to your
-            website. Click the Edit button to get started.
-          </div>
+          <DiscoverySection scrollRef={analyzeRef} opsQuestionList={opsQuestionList} />
         </AccordionItem>
       </Accordion>
     </ScrollShadow>

@@ -1,6 +1,6 @@
 'use client';
 import LandingContent from './interfaces/LandingContent';
-import DiscoveryFlow from './interfaces/DiscoveryFlow';
+import DiscoveryFlow from './interfaces/DiscoveryFlow/DiscoveryFlow';
 import { useState } from 'react';
 import { CONTENT } from './enums';
 
