@@ -1,12 +1,10 @@
 'use client';
 import styles from '../page.module.css';
-import { CONTENT } from '../enums';
+import { useRouter } from 'next/navigation';
 
-interface LandingContentProps {
-  changeContent: (content: CONTENT) => void;
-}
+export default function LandingContent() {
+  const router = useRouter();
 
-export default function LandingContent({ changeContent }: LandingContentProps) {
   return (
     <div className={`${styles.landing}`}>
       <div className={styles.center}>
@@ -17,10 +15,7 @@ export default function LandingContent({ changeContent }: LandingContentProps) {
       </div>
 
       <div className={styles.grid}>
-        <div
-          className={`${styles.card} cursor-pointer`}
-          onClick={() => changeContent(CONTENT.DISCOVERY_FLOW)}
-        >
+        <div className={`${styles.card} cursor-pointer`} onClick={() => router.push('/discover')}>
           <h2>
             Discover Services<span>-&gt;</span>
           </h2>
