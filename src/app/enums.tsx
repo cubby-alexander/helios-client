@@ -1,6 +1,7 @@
-export enum CONTENT {
-  LANDING = 'landing',
-  DISCOVERY_FLOW = 'discovery_flow'
+export enum DISCOVERY_CONTENT {
+  SELECTION = 'selection',
+  PROJECT_SCOPE = 'project_scope',
+  ORGANIZATION_SCOPE = 'organization_scope'
 }
 
 export enum FORM_STATUS {
