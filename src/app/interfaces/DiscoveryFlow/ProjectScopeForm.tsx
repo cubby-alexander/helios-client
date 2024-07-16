@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem, ScrollShadow } from '@nextui-org/react';
 import { FunnelIcon, GlobeAmericasIcon, WrenchIcon } from '@heroicons/react/16/solid';
-// import styles from './styles.module.css';
+// @ts-ignore
+import styles from '../../discover/page.module.css';
 import { RefObject, useRef, useState } from 'react';
 import { OpsQuestionList, OrgOpsList, RefinedOpsList } from '../../types/DiscoveryFormTypes';
 import OpsRefineSection from './OpsRefineSection';
@@ -138,7 +139,7 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
       </ScrollShadow>
       <p
         onClick={() => setDiscovery(DISCOVERY_CONTENT.SELECTION)}
-        className={` text-gray-300 font-normal w-[80vw] max-w-[800px] cursor-pointer`}
+        className={`${styles.backnav} text-gray-300 font-normal w-[80vw] max-w-[800px] cursor-pointer`}
       >
         <span>&lt;-</span> Return to discovery selection (progress not saved)
       </p>
