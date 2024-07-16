@@ -1,19 +1,15 @@
 import { Accordion, AccordionItem, ScrollShadow } from '@nextui-org/react';
-import {
-  CubeTransparentIcon,
-  FunnelIcon,
-  GlobeAmericasIcon,
-  WrenchIcon
-} from '@heroicons/react/16/solid';
-import styles from '../../discover/page.module.css';
+import { FunnelIcon, GlobeAmericasIcon, WrenchIcon } from '@heroicons/react/16/solid';
+// import styles from './styles.module.css';
 import { RefObject, useRef, useState } from 'react';
 import { OpsQuestionList, OrgOpsList, RefinedOpsList } from '../../types/DiscoveryFormTypes';
-import OrgScopeSection from './OrgScopeSection';
 import OpsRefineSection from './OpsRefineSection';
 import { SelectKeyOpsSection } from './SelectKeyOpsSection';
 import { DiscoverySection } from './DiscoverySection';
 import { mockOpsQuestionList } from '../../mocks/ops-question-list';
 import { DISCOVERY_CONTENT } from '../../enums';
+import { ArrowsPointingInIcon } from '@heroicons/react/24/outline';
+import { ProjectGoalSection } from './ProjectGoalSection';
 
 interface ProjectScopeFormProps {
   setDiscovery: (content: DISCOVERY_CONTENT) => void;
@@ -22,7 +18,7 @@ interface ProjectScopeFormProps {
 export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps) {
   const [openKeys, setOpenKeys] = useState<string[]>(['1']);
   const [disabledKeys, setDisabledKeys] = useState<string[]>(['2', '3', '4']);
-  const [orgScope, setOrgScope] = useState<string>('');
+  const [projectGoal, setProjectGoal] = useState<string>('');
   const [orgOpsList, setOrgOpsList] = useState<OrgOpsList | null>(null);
   const [refinedOpsList, setRefinedOpsList] = useState<RefinedOpsList | null>(null);
   const [opsQuestionList, setOpsQuestionList] = useState<OpsQuestionList | null>(
@@ -38,13 +34,6 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
     title: 'font-normal text-slate-200 pl-4',
     subtitle: 'pl-4 text-small',
     content: 'text-small px-2 text-xs'
-  };
-
-  // @ts-ignore
-  const handleScopeAccordionFocus = (event: FocusEvent<Element, Element>) => {
-    if (event && textareaRef.current && 'focus' in textareaRef.current) {
-      (textareaRef.current as HTMLTextAreaElement).focus();
-    }
   };
 
   const handleScroll = (element: RefObject<HTMLDivElement>) => {
@@ -75,15 +64,14 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
         >
           <AccordionItem
             key='1'
-            aria-label='Organization or Mission Scope'
-            startContent={<CubeTransparentIcon className='text-slate-400 h-7 w-7' />}
-            title={<p className='text-lg font-light font-medium'>Organization or Mission Scope</p>}
-            subtitle='Tell us what you do'
-            onFocus={handleScopeAccordionFocus}
+            aria-label='Project Goals and Context'
+            startContent={<ArrowsPointingInIcon className='text-slate-400 h-7 w-7' />}
+            title={<p className='text-lg font-medium'>Project Goals and Context</p>}
+            subtitle="Tell us what you're trying to do"
           >
-            <OrgScopeSection
+            <ProjectGoalSection
               textRef={textareaRef}
-              orgScopeChange={(scope: string) => setOrgScope(scope)}
+              projectGoalChange={(scope: string) => setProjectGoal(scope)}
               orgOpsChange={(ops: OrgOpsList) => setOrgOpsList(ops)}
               disabledKeyChange={setDisabledKeys}
               openKeyChange={setOpenKeys}
@@ -95,14 +83,14 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
           </AccordionItem>
           <AccordionItem
             key='2'
-            aria-label='Major Operations Map'
+            aria-label='Project Team'
             startContent={<WrenchIcon className='text-slate-400 h-7 w-7' />}
-            title={<p className='text-lg font-medium'>Major Operations Map</p>}
+            title={<p className='text-lg font-medium'>Project Team</p>}
             subtitle='Confirm how you work'
           >
             <OpsRefineSection
               orgOpsList={orgOpsList}
-              orgScope={orgScope}
+              orgScope={projectGoal}
               disabledKeyChange={setDisabledKeys}
               openKeyChange={setOpenKeys}
               refinedOpsListChange={setRefinedOpsList}
@@ -122,7 +110,7 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
           >
             <SelectKeyOpsSection
               refinedOpsList={refinedOpsList}
-              orgScope={orgScope}
+              orgScope={projectGoal}
               opsQuestionListChange={setOpsQuestionList}
               disabledKeyChange={setDisabledKeys}
               openKeyChange={setOpenKeys}
@@ -141,7 +129,7 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
             title={<p className='font-medium'>Generate Satellite Solutions</p>}
           >
             <DiscoverySection
-              orgScope={orgScope}
+              orgScope={projectGoal}
               opsQuestionList={opsQuestionList}
               scrollRef={analyzeRef}
             />
@@ -150,7 +138,7 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
       </ScrollShadow>
       <p
         onClick={() => setDiscovery(DISCOVERY_CONTENT.SELECTION)}
-        className={`${styles.backnav} text-gray-300 font-light w-[80vw] max-w-[800px] cursor-pointer`}
+        className={` text-gray-300 font-normal w-[80vw] max-w-[800px] cursor-pointer`}
       >
         <span>&lt;-</span> Return to discovery selection (progress not saved)
       </p>
