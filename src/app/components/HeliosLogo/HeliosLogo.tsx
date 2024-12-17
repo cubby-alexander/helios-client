@@ -18,27 +18,37 @@ export default function HeliosLogo() {
     }
   };
 
+  const rowContainer = 'flex flex-row items-start';
+
   return (
-    <div>
-      <a href='/' rel='noopener noreferrer'>
-        <Image src='/logo-heli-light.png' alt='Helios Logo' width={90} height={40} priority />
-        <Image
-          src='/logo-orbital-light.png'
-          alt='Helios Logo'
-          className={styles.orbital}
-          width={34}
-          height={34}
-          priority
-        />
-        <Image
-          src='/logo-s-light.png'
-          alt='Helios Logo'
-          style={{ marginLeft: '-22px' }}
-          width={50}
-          height={50}
-          priority
-        />
-      </a>
-    </div>
+    <a href='/' rel='noopener noreferrer' className={rowContainer}>
+      <Image
+        src='/logo-heli-light.png'
+        alt='Helios Logo'
+        width={70}
+        height={40}
+        style={{ marginLeft: '-8px' }}
+        priority
+        draggable={false}
+      />
+      <Image
+        src='/logo-orbital-light.png'
+        alt='Helios Logo'
+        className={styles.orbital}
+        width={26}
+        height={34}
+        priority
+        draggable={false}
+      />
+      <Image
+        src='/logo-s-light.png'
+        alt='Helios Logo'
+        style={{ marginLeft: '-12.5px', marginTop: '-2px' }}
+        width={40}
+        height={50}
+        priority
+        draggable={false}
+      />
+    </a>
   );
 }

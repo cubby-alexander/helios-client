@@ -7,7 +7,7 @@ interface ScopeSelectionProps {
 
 export default function ScopeSelection({ setSelection }: ScopeSelectionProps) {
   return (
-    <div className='flex flex-col w-full h-[70vh] gap-20 justify-start items-center mt-20'>
+    <div className='flex flex-col w-full h-full gap-20 justify-start items-center mt-20'>
       <div className={`text-gray-400 font-extralight text-3xl mb-4`}>
         Discover Valuable Satellite Services
       </div>

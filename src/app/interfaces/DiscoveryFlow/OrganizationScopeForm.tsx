@@ -54,14 +54,16 @@ export default function OrganizationScopeForm({ setDiscovery }: OrganizationScop
   };
 
   return (
-    <div className='relative w-screen h-[70vh] flex flex-col justify-start items-center text-left z-20'>
-      <div className={`text-gray-400 font-extralight text-3xl mb-4`}>
-        Satellite Services For An Organization
-      </div>
-
-      <ScrollShadow className='relative w-screen h-[70vh] flex flex-col justify-start items-center text-left my-2 z-20'>
+    <div className='relative w-full h-full flex flex-col justify-start text-left z-20'>
+      <ScrollShadow
+        className='relative h-full flex flex-col justify-start text-left z-20'
+        size={80}
+      >
+        <div className={`text-gray-300 font-light text-2xl pt-8`}>
+          Discover services for your organization
+        </div>
         <Accordion
-          className='p-2 flex flex-col gap-1 w-[80vw] max-w-[800px]'
+          className='p-2 flex flex-col gap-1 w-full'
           itemClasses={itemClasses}
           showDivider={false}
           disableAnimation={false}
@@ -150,7 +152,7 @@ export default function OrganizationScopeForm({ setDiscovery }: OrganizationScop
       </ScrollShadow>
       <p
         onClick={() => setDiscovery(DISCOVERY_CONTENT.SELECTION)}
-        className={`${styles.backnav} text-gray-300 font-light w-[80vw] max-w-[800px] cursor-pointer`}
+        className={`${styles.backnav} text-gray-400 text-lg font-light w-full cursor-pointer pl-2 mt-4 mb-6`}
       >
         <span>&lt;-</span> Return to discovery selection (progress not saved)
       </p>

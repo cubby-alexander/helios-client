@@ -4,6 +4,8 @@ import './globals.css';
 import Providers from './providers';
 import styles from './page.module.css';
 import HeliosLogo from './components/HeliosLogo/HeliosLogo';
+import NavigationBar from './components/NavigationBar/NavigationBar';
+import AppContentBox from './components/AppContentBox/AppContentBox';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,12 +23,12 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <Providers>
-          <main className={`relative z-15 dark bg-background ${styles.main}`}>
-            <div className={styles.description}>
-              <HeliosLogo />
-            </div>
-            {children}
-          </main>
+          <div className='w-full bg-background'>
+            <main className={`relative z-15 dark ${styles.main}`}>
+              <NavigationBar />
+              <AppContentBox>{children}</AppContentBox>
+            </main>
+          </div>
           <div
             aria-hidden='true'
             className='fixed dark:md:block dark:opacity-70 -bottom-[40%] -left-[20%] z-0'
