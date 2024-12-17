@@ -22,7 +22,7 @@ export default function Discover() {
 
   return (
     <ScrollShadow
-      className='relative w-screen h-[70vh] flex flex-col justify-start items-center text-left my-2 z-20'
+      className='relative h-full flex flex-col justify-start text-left z-20'
       hideScrollBar={true}
     >
       {contentDisplayed()}

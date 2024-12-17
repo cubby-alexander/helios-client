@@ -1,9 +1,7 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  padding: 6rem;
   min-height: 100vh;
 }
 
@@ -11,9 +9,11 @@
   display: inherit;
   justify-content: inherit;
   align-items: inherit;
-  font-size: 0.85rem;
+  align-self: start;
   max-width: var(--max-width);
+  margin: auto;
   width: 100%;
+  font-size: 0.85rem;
   z-index: 35;
   font-family: var(--font-mono);
 }
@@ -37,10 +37,10 @@
 .landing {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  height: 55vh;
   text-align: center;
+  height: 95%;
 }
 
 .code {
