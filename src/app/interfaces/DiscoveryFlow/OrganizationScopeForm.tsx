@@ -5,7 +5,7 @@ import {
   GlobeAmericasIcon,
   WrenchIcon
 } from '@heroicons/react/16/solid';
-import styles from '../../discover/page.module.css';
+import styles from './styles.module.css';
 import { RefObject, useRef, useState } from 'react';
 import { OpsQuestionList, OrgOpsList, RefinedOpsList } from '../../types/DiscoveryFormTypes';
 import OrgScopeSection from './OrgScopeSection';
@@ -14,6 +14,16 @@ import { SelectKeyOpsSection } from './SelectKeyOpsSection';
 import { DiscoverySection } from './DiscoverySection';
 import { mockOpsQuestionList } from '../../mocks/ops-question-list';
 import { DISCOVERY_CONTENT } from '../../enums';
+import {
+  formBox,
+  formScrollShadow,
+  formAccordion,
+  formTitle,
+  itemIcon,
+  itemTitle,
+  itemClasses,
+  formBackNav
+} from './commonStyles';
 
 interface OrganizationScopeFormProps {
   setDiscovery: (content: DISCOVERY_CONTENT) => void;
@@ -32,14 +42,6 @@ export default function OrganizationScopeForm({ setDiscovery }: OrganizationScop
   const refineRef = useRef<HTMLDivElement | null>(null);
   const filterRef = useRef<HTMLDivElement | null>(null);
   const analyzeRef = useRef<HTMLDivElement | null>(null);
-
-  const itemClasses = {
-    base: 'w-full',
-    title: 'font-normal text-slate-200 pl-4',
-    subtitle: 'pl-4 text-small',
-    content: 'text-small px-2 text-xs'
-  };
-
   // @ts-ignore
   const handleScopeAccordionFocus = (event: FocusEvent<Element, Element>) => {
     if (event && textareaRef.current && 'focus' in textareaRef.current) {
@@ -54,16 +56,11 @@ export default function OrganizationScopeForm({ setDiscovery }: OrganizationScop
   };
 
   return (
-    <div className='relative w-full h-full flex flex-col justify-start text-left z-20'>
-      <ScrollShadow
-        className='relative h-full flex flex-col justify-start text-left z-20'
-        size={80}
-      >
-        <div className={`text-gray-300 font-light text-2xl pt-8`}>
-          Discover services for your organization
-        </div>
+    <div className={formBox}>
+      <ScrollShadow className={formScrollShadow} size={80}>
+        <div className={formTitle}>Discover services for your organization</div>
         <Accordion
-          className='p-2 flex flex-col gap-1 w-full'
+          className={formAccordion}
           itemClasses={itemClasses}
           showDivider={false}
           disableAnimation={false}
@@ -78,8 +75,8 @@ export default function OrganizationScopeForm({ setDiscovery }: OrganizationScop
           <AccordionItem
             key='1'
             aria-label='Organization or Mission Scope'
-            startContent={<CubeTransparentIcon className='text-slate-400 h-7 w-7' />}
-            title={<p className='text-lg font-light font-medium'>Organization or Mission Scope</p>}
+            startContent={<CubeTransparentIcon className={itemIcon} />}
+            title={<p className={itemTitle}>Organization or Mission Scope</p>}
             subtitle='Tell us what you do'
             onFocus={handleScopeAccordionFocus}
           >
@@ -98,8 +95,8 @@ export default function OrganizationScopeForm({ setDiscovery }: OrganizationScop
           <AccordionItem
             key='2'
             aria-label='Major Operations Map'
-            startContent={<WrenchIcon className='text-slate-400 h-7 w-7' />}
-            title={<p className='text-lg font-medium'>Major Operations Map</p>}
+            startContent={<WrenchIcon className={itemIcon} />}
+            title={<p className={itemTitle}>Major Operations Map</p>}
             subtitle='Confirm how you work'
           >
             <OpsRefineSection
@@ -118,8 +115,8 @@ export default function OrganizationScopeForm({ setDiscovery }: OrganizationScop
           <AccordionItem
             key='3'
             aria-label='Select Key Operations'
-            startContent={<FunnelIcon className='text-slate-400 h-7 w-7' />}
-            title={<p className='font-medium'>Select Key Operations</p>}
+            startContent={<FunnelIcon className={itemIcon} />}
+            title={<p className={itemTitle}>Select Key Operations</p>}
             subtitle='What do you need?'
           >
             <SelectKeyOpsSection
@@ -138,9 +135,9 @@ export default function OrganizationScopeForm({ setDiscovery }: OrganizationScop
           <AccordionItem
             key='4'
             aria-label='Card expired'
-            startContent={<GlobeAmericasIcon className='text-slate-400 h-7 w-7' />}
+            startContent={<GlobeAmericasIcon className={itemIcon} />}
             subtitle='What unlocks value?'
-            title={<p className='font-medium'>Generate Satellite Solutions</p>}
+            title={<p className={itemTitle}>Generate Satellite Solutions</p>}
           >
             <DiscoverySection
               orgScope={orgScope}
@@ -152,7 +149,7 @@ export default function OrganizationScopeForm({ setDiscovery }: OrganizationScop
       </ScrollShadow>
       <p
         onClick={() => setDiscovery(DISCOVERY_CONTENT.SELECTION)}
-        className={`${styles.backnav} text-gray-400 text-lg font-light w-full cursor-pointer pl-2 mt-4 mb-6`}
+        className={`${styles.backnav} ${formBackNav}`}
       >
         <span>&lt;-</span> Return to discovery selection (progress not saved)
       </p>

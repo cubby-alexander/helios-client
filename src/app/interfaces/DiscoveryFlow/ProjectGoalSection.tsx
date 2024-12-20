@@ -109,7 +109,7 @@ export function ProjectGoalSection({
         isRequired
         isInvalid={false}
         value={values['team']}
-        onValueChange={(newValue) => handleFormValueChange('team', newValue)}
+        onValueChange={(newValue: string) => handleFormValueChange('team', newValue)}
         onKeyDown={(e) => {}}
       />
 

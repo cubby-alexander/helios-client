@@ -99,8 +99,8 @@ export function DiscoverySection({ orgScope, opsQuestionList, scrollRef }: Disco
                   labelPlacement={'outside'}
                   className='w-full py-6'
                   value={formValues[set.operation][questionIndex]}
-                  onKeyDown={(e) => {}}
-                  onChange={(e) => {
+                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {}}
+                  onChange={(e: { target: { value: any } }) => {
                     setFormValues((prevFormValues: any) => ({
                       ...prevFormValues,
                       [set.operation]: {
