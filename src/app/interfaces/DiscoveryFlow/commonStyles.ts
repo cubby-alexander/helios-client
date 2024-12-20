@@ -11,4 +11,5 @@ export const itemClasses = {
   subtitle: 'pl-4 text-small',
   content: 'text-small px-2 text-xs'
 };
-export const formBackNav = 'text-gray-400 text-lg font-light w-full cursor-pointer pl-2 mt-4 mb-6';
+export const formBackNav =
+  'text-gray-400 text-lg font-light w-full cursor-pointer pl-2 mt-4 mb-6 [&>span]:inline-block [&>span]:transition-transform [&>span]:duration-200 hover:[&>span]:-translate-x-1';

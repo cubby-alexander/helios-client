@@ -1,7 +1,5 @@
 import { Accordion, AccordionItem, ScrollShadow } from '@nextui-org/react';
 import { FunnelIcon, GlobeAmericasIcon, WrenchIcon } from '@heroicons/react/16/solid';
-// @ts-ignore
-import styles from '../../discover/page.module.css';
 import { RefObject, useRef, useState } from 'react';
 import { OpsQuestionList, OrgOpsList, RefinedOpsList } from '../../types/DiscoveryFormTypes';
 import OpsRefineSection from './OpsRefineSection';
@@ -11,6 +9,16 @@ import { mockOpsQuestionList } from '../../mocks/ops-question-list';
 import { DISCOVERY_CONTENT } from '../../enums';
 import { ArrowsPointingInIcon } from '@heroicons/react/24/outline';
 import { ProjectGoalSection } from './ProjectGoalSection';
+import {
+  formBox,
+  formScrollShadow,
+  formAccordion,
+  formTitle,
+  itemIcon,
+  itemTitle,
+  itemClasses,
+  formBackNav
+} from './commonStyles';
 
 interface ProjectScopeFormProps {
   setDiscovery: (content: DISCOVERY_CONTENT) => void;
@@ -30,13 +38,6 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
   const filterRef = useRef<HTMLDivElement | null>(null);
   const analyzeRef = useRef<HTMLDivElement | null>(null);
 
-  const itemClasses = {
-    base: 'w-full',
-    title: 'font-normal text-slate-200 pl-4',
-    subtitle: 'pl-4 text-small',
-    content: 'text-small px-2 text-xs'
-  };
-
   const handleScroll = (element: RefObject<HTMLDivElement>) => {
     if (element.current) {
       element.current.scrollIntoView({ behavior: 'smooth' });
@@ -44,14 +45,11 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
   };
 
   return (
-    <div className='relative w-screen h-[70vh] flex flex-col justify-start items-center text-left z-20'>
-      <div className={`text-gray-400 font-extralight text-3xl mb-4`}>
-        Satellite Services For A Project
-      </div>
-
-      <ScrollShadow className='relative w-screen h-[70vh] flex flex-col justify-start items-center text-left my-2 z-20'>
+    <div className={formBox}>
+      <ScrollShadow className={formScrollShadow} size={80}>
+        <div className={formTitle}>Satellite Services For A Project</div>
         <Accordion
-          className='p-2 flex flex-col gap-1 w-[80vw] max-w-[800px]'
+          className={formAccordion}
           itemClasses={itemClasses}
           showDivider={false}
           disableAnimation={false}
@@ -66,8 +64,8 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
           <AccordionItem
             key='1'
             aria-label='Project Goals and Context'
-            startContent={<ArrowsPointingInIcon className='text-slate-400 h-7 w-7' />}
-            title={<p className='text-lg font-medium'>Project Goals and Context</p>}
+            startContent={<ArrowsPointingInIcon className={itemIcon} />}
+            title={<p className={itemTitle}>Project Goals and Context</p>}
             subtitle="Tell us what you're trying to do"
           >
             <ProjectGoalSection
@@ -85,8 +83,8 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
           <AccordionItem
             key='2'
             aria-label='Project Team'
-            startContent={<WrenchIcon className='text-slate-400 h-7 w-7' />}
-            title={<p className='text-lg font-medium'>Project Team</p>}
+            startContent={<WrenchIcon className={itemIcon} />}
+            title={<p className={itemTitle}>Project Team</p>}
             subtitle='Confirm how you work'
           >
             <OpsRefineSection
@@ -105,8 +103,8 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
           <AccordionItem
             key='3'
             aria-label='Select Key Operations'
-            startContent={<FunnelIcon className='text-slate-400 h-7 w-7' />}
-            title={<p className='font-medium'>Select Key Operations</p>}
+            startContent={<FunnelIcon className={itemIcon} />}
+            title={<p className={itemTitle}>Select Key Operations</p>}
             subtitle='What do you need?'
           >
             <SelectKeyOpsSection
@@ -125,9 +123,9 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
           <AccordionItem
             key='4'
             aria-label='Card expired'
-            startContent={<GlobeAmericasIcon className='text-slate-400 h-7 w-7' />}
+            startContent={<GlobeAmericasIcon className={itemIcon} />}
             subtitle='What unlocks value?'
-            title={<p className='font-medium'>Generate Satellite Solutions</p>}
+            title={<p className={itemTitle}>Generate Satellite Solutions</p>}
           >
             <DiscoverySection
               orgScope={projectGoal}
@@ -137,10 +135,7 @@ export default function ProjectScopeForm({ setDiscovery }: ProjectScopeFormProps
           </AccordionItem>
         </Accordion>
       </ScrollShadow>
-      <p
-        onClick={() => setDiscovery(DISCOVERY_CONTENT.SELECTION)}
-        className={`${styles.backnav} text-gray-300 font-normal w-[80vw] max-w-[800px] cursor-pointer`}
-      >
+      <p onClick={() => setDiscovery(DISCOVERY_CONTENT.SELECTION)} className={formBackNav}>
         <span>&lt;-</span> Return to discovery selection (progress not saved)
       </p>
     </div>

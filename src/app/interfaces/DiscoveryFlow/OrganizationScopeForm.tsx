@@ -5,7 +5,6 @@ import {
   GlobeAmericasIcon,
   WrenchIcon
 } from '@heroicons/react/16/solid';
-import styles from './styles.module.css';
 import { RefObject, useRef, useState } from 'react';
 import { OpsQuestionList, OrgOpsList, RefinedOpsList } from '../../types/DiscoveryFormTypes';
 import OrgScopeSection from './OrgScopeSection';
@@ -147,10 +146,7 @@ export default function OrganizationScopeForm({ setDiscovery }: OrganizationScop
           </AccordionItem>
         </Accordion>
       </ScrollShadow>
-      <p
-        onClick={() => setDiscovery(DISCOVERY_CONTENT.SELECTION)}
-        className={`${styles.backnav} ${formBackNav}`}
-      >
+      <p onClick={() => setDiscovery(DISCOVERY_CONTENT.SELECTION)} className={formBackNav}>
         <span>&lt;-</span> Return to discovery selection (progress not saved)
       </p>
     </div>
