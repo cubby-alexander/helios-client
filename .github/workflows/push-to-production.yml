@@ -79,6 +79,9 @@ jobs:
             export DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}
             export DOCKER_APP_NAME=${{ secrets.DOCKER_APP_NAME }}
             
+            # Login to Docker Hub
+            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
             # Stop existing containers if they exist
             docker-compose down || true
             
