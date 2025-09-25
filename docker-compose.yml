@@ -1,4 +1,3 @@
-version: '3'
 services:
   nextjs:
     image: ${DOCKER_HUB_USERNAME}/${DOCKER_APP_NAME}:latest

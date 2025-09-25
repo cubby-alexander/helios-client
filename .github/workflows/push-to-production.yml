@@ -74,10 +74,24 @@ jobs:
           scp -i private_key -o StrictHostKeyChecking=no docker-compose.yml nginx.conf $DO_USER@$DO_SERVER_IP:/home/$DO_USER/deployment
           ssh -i private_key -o StrictHostKeyChecking=no -t $DO_USER@$DO_SERVER_IP << EOF
             cd /home/$DO_USER/deployment
-            docker-compose down
-            docker rm -f $(docker ps -a -q)
-            docker volume rm $(docker volume ls -q)
-            DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} DOCKER_APP_NAME=${{ secrets.DOCKER_APP_NAME }} docker-compose pull
-            DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }} DOCKER_APP_NAME=${{ secrets.DOCKER_APP_NAME }} docker-compose up -d
+            
+            # Export environment variables
+            export DOCKER_HUB_USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}
+            export DOCKER_APP_NAME=${{ secrets.DOCKER_APP_NAME }}
+            
+            # Stop existing containers if they exist
+            docker-compose down || true
+            
+            # Clean up containers and volumes only if they exist
+            if [ "\$(docker ps -a -q)" ]; then
+              docker rm -f \$(docker ps -a -q)
+            fi
+            
+            if [ "\$(docker volume ls -q)" ]; then
+              docker volume rm \$(docker volume ls -q) || true
+            fi
+            
+            # Pull latest images and start
+            docker-compose pull
+            docker-compose up -d
           EOF
-
