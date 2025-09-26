@@ -58,7 +58,8 @@ export default function OpsRefineSection({
 
       meceOpsList = await Promise.all(fetchPromises);
       cleanedOpsList = meceOpsList.map((item) => {
-        let opsList = JSON.parse(item.data[0].content[0].text.value);
+        // Handle new Chat Completion API response format
+        const opsList = item.content;
         return { majorOperation: opsList.operation, operations: opsList.activities.join(', ') };
       });
     } catch (error) {
@@ -86,7 +87,6 @@ export default function OpsRefineSection({
       });
 
       const results = await Promise.all(fetchPromises);
-      console.log(results);
       refinedOpsListChange(results);
       setFormStatus(FORM_STATUS.SUCCESS);
       disabledKeyChange(['4']);

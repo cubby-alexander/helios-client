@@ -50,9 +50,10 @@ export default function OrgScopeSection({
         return response.json();
       })
       .then((data) => {
+        console.log('data', data);
         setFormStatus(FORM_STATUS.SUCCESS);
         orgScopeChange(value);
-        orgOpsChange(JSON.parse(data[0].content[0].text.value));
+        orgOpsChange(data.content);
         disabledKeyChange(['3', '4']);
         openKeyChange(['2']);
         scroll.handler(scroll.target);
