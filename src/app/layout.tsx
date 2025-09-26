@@ -11,7 +11,10 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Helios',
-  description: 'Orbital service marketplace'
+  description: 'Orbital service marketplace',
+  icons: {
+    icon: '/favicon.ico'
+  }
 };
 
 export default function RootLayout({
