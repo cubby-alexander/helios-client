@@ -81,7 +81,7 @@ jobs:
             
             # Login to Docker Hub
             echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-            
+
             # Stop existing containers if they exist
             docker-compose down || true
             
